@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.*;
 
 public class BoardSequence implements Iterable<Board> {
-    private final List<TemporalCoordinates> temporalCoordinatesList;
+    private final TemporalCoordinates temporalCoordinatesList;
 
 
     private final Set<Particle> particles = new HashSet<>();
@@ -19,8 +19,8 @@ public class BoardSequence implements Iterable<Board> {
     private final Board board;
 
     // If M is null, then the optimal value of M is utilized
-    public BoardSequence(StaticStats staticStats, List<TemporalCoordinates> temporalCoordinatesList, Integer M, double interactionRadius, Board.BoundaryConditions boundaryConditions) {
-        this.temporalCoordinatesList = temporalCoordinatesList;
+    public BoardSequence(StaticStats staticStats, TemporalCoordinates initialCoordinates, Integer M, double interactionRadius, Board.BoundaryConditions boundaryConditions) {
+        this.temporalCoordinatesList = initialCoordinates;
         Coordinates coordinates = Coordinates.of(0, 0);
         for (Map.Entry<Integer, Properties> idProp : staticStats.getIdPropertyPairs()) {
             Properties properties = idProp.getValue();
@@ -30,7 +30,7 @@ public class BoardSequence implements Iterable<Board> {
         if (M == null) {
             M = Board.computeOptimalM(staticStats.getBoardLength(),interactionRadius,particles);
         }
-        if (staticStats.getParticlesQty() != temporalCoordinatesList.get(0).getCoordinatesCount()) {
+        if (staticStats.getParticlesQty() != initialCoordinates.getCoordinatesCount()) {
             throw new RuntimeException("Number of particles in static stats and coordinates of temporal coordinates should match");
         }
         board = new Board(M, staticStats.getBoardLength(), interactionRadius, boundaryConditions);
@@ -55,7 +55,8 @@ public class BoardSequence implements Iterable<Board> {
 
 
     private Board getNextBoard() {
-        TemporalCoordinates tc = temporalCoordinatesList.get(index++);
+        // TODO use formula to compute next state
+        TemporalCoordinates tc = temporalCoordinatesList;
         board.setTime(tc.getTime());
         for (Particle particle : particles) {
             int id = particle.getId();
@@ -81,7 +82,7 @@ public class BoardSequence implements Iterable<Board> {
         return new Iterator<Board>() {
             @Override
             public boolean hasNext() {
-                return index < temporalCoordinatesList.size();
+                return true;
             }
 
             @Override

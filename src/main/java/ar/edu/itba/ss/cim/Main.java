@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 
 public class Main {
@@ -26,17 +27,17 @@ public class Main {
 
         Arguments argsObj;
         if (args.length == 0) {
-            argsObj = new Arguments(new int[]{80,160,320, 640},10,1,3, new Integer[]{6,7,8,9,10,11});
+            argsObj = new Arguments(new int[]{5},10,1,3, new Integer[]{6,7,8,9,10,11});
         } else {
             // Ejemplo:
             // java -jar ./neighbouring-particles-search-1.0-SNAPSHOT.jar -m 3 -m 4 -n 50 -n 100 -n 500 -n 1000 -l 10 -r 2.5 -t 5
             argsObj = Arguments.parseArguments(args);
         }
-        int timeValues = argsObj.getTimes();
         int[] numberOfParticles = argsObj.getNumberOfParticles();
         double interactionRadius = argsObj.getInteractionRadius();
         double boardLength = argsObj.getBoardLength();
         Integer[] ms = argsObj.getMs();
+        double maxSpeed = 5;
 
         if (ms.length == 0) {
             ms = new Integer[]{null};
@@ -46,14 +47,17 @@ public class Main {
         ExecutionStatsWrapper stats = new ExecutionStatsWrapper();
         for (int particlesNumber : numberOfParticles) {
             for (Integer m : ms) {
-                FileNamesWrapper fileNameWrapper = Fileparser.generateInputData(particlesNumber, boardLength, interactionRadius, timeValues);
+                FileNamesWrapper fileNameWrapper = Fileparser.generateInputData(particlesNumber, boardLength, maxSpeed);
 
                 String STATIC_FILE_PATH = fileNameWrapper.StaticFileName;
                 String DYNAMIC_FILE_PATH = fileNameWrapper.DynamicFileName;
                 StaticStats staticStats = Fileparser.parseStaticFile(STATIC_FILE_PATH);
-                List<TemporalCoordinates> temporalCoordinates = Fileparser.parseDynamicFile(DYNAMIC_FILE_PATH);
+                TemporalCoordinates temporalCoordinates = Fileparser.parseDynamicFile(DYNAMIC_FILE_PATH);
                 BoardSequence boardSequence = new BoardSequence(staticStats, temporalCoordinates, m, interactionRadius, Board.BoundaryConditions.NOT_PERIODIC);
                 int actualM = boardSequence.getM();
+                Iterator<Board> boardIterator = boardSequence.iterator();
+                int idx = 0;
+                int stop = 3;
                 for (Board b : boardSequence) {
                     long start = System.currentTimeMillis();
                     b.getNeighbours(Board.Method.BRUTE_FORCE);
@@ -68,6 +72,10 @@ public class Main {
                     System.out.printf("CIM Computation time: %d ms\n", cimComputationTime);
 
                     stats.addStats(particlesNumber, bruteForceComputationTime, cimComputationTime, actualM);
+
+                    idx++;
+                    if (idx == stop)
+                        break;
                 }
 
                 boardSequence.writeToFile("sequence" + fileNameWrapper.getId() + ".json");

@@ -5,6 +5,7 @@ import java.util.Map;
 
 public class TemporalCoordinates {
     private final Map<Integer, Coordinates> coordinatesById = new HashMap<>();
+    private final Map<Integer, Velocity> velocityById = new HashMap<>();
     private final int time;
 
     public TemporalCoordinates(int time) {
@@ -13,6 +14,10 @@ public class TemporalCoordinates {
 
     public void addCoordinates(int particleId, Coordinates coordinates) {
         coordinatesById.put(particleId, coordinates);
+    }
+
+    public void addVelocity(int particleId, Velocity velocity) {
+        velocityById.put(particleId, velocity);
     }
 
     public int getCoordinatesCount() {

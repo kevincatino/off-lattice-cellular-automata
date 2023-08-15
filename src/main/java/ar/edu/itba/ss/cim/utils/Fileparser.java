@@ -6,6 +6,7 @@ import ar.edu.itba.ss.cim.models.Coordinates;
 import ar.edu.itba.ss.cim.models.Properties;
 import ar.edu.itba.ss.cim.models.StaticStats;
 import ar.edu.itba.ss.cim.models.TemporalCoordinates;
+import ar.edu.itba.ss.cim.models.Velocity;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -14,56 +15,46 @@ import java.time.Instant;
 import java.util.*;
 
 public interface Fileparser {
-    static List<TemporalCoordinates> parseDynamicFile(String filePath) throws IOException {
+    static TemporalCoordinates parseDynamicFile(String filePath) throws IOException {
 
         String dynamicFileText = IO.readFile(filePath);
 
-        List<TemporalCoordinates> timeData = new ArrayList<>();
         Scanner scanner = new Scanner(dynamicFileText);
 
         String line;
-        Integer currentTime = null;
 
-        TemporalCoordinates tc = null;
-        Integer idCounter = null;
+        TemporalCoordinates tc = new TemporalCoordinates(0);
+        int idCounter = 1;
 
-        while ((scanner.hasNextLine() && (line = scanner.nextLine().trim()) != null)) {
-
-            if (line.contains(" ")) {
-                if (idCounter == null || tc == null) {
-                    throw new RuntimeException("Invalid dynamic file format");
-                }
+        while ((scanner.hasNextLine() && (line = scanner.nextLine()) != null)) {
+                line = line.trim();
                 String[] parts = line.split("\s+");
                 double x = Double.parseDouble(parts[0]);
                 double y = Double.parseDouble(parts[1]);
-                tc.addCoordinates(idCounter++, Coordinates.of(x, y));
-            } else {
-                currentTime = Integer.parseInt(line);
-                idCounter = 1;
-                tc = new TemporalCoordinates(currentTime);
-                timeData.add(currentTime, tc);
-            }
+                tc.addCoordinates(idCounter, Coordinates.of(x, y));
+                double vx = Double.parseDouble(parts[2]);
+                double vy = Double.parseDouble(parts[3]);
+                tc.addVelocity(idCounter++,Velocity.of(vx,vy));
         }
 
         scanner.close();
-        return timeData;
+        return tc;
     }
 
-    static FileNamesWrapper generateInputData(int numberOfParticles, double boardLength, double interactionLength, int intervals) throws IOException {
+    static FileNamesWrapper generateInputData(int numberOfParticles, double boardLength, double maxSpeed) throws IOException {
         FileNamesWrapper fileNames = new FileNamesWrapper("static" , "dynamic" );
         FileWriter writer = new FileWriter(fileNames.DynamicFileName);
 
         Random rand = new Random();
             BufferedWriter dynamicFileBuffer = new BufferedWriter(writer);
-        for (int time=0 ; time<intervals ; time++) {
-            dynamicFileBuffer.write(String.format("%d\n",time));
             for (int i=0 ; i<numberOfParticles ; i++) {
 
                double x = rand.nextDouble(boardLength);
                 double y = rand.nextDouble(boardLength);
-                dynamicFileBuffer.write(String.format("%f %f\n",x,y));
+                double vx = rand.nextDouble(maxSpeed);
+                double vy = rand.nextDouble(maxSpeed);
+                dynamicFileBuffer.write(String.format("%f %f %f %f\n",x,y, vx, vy));
             }
-        }
 
         dynamicFileBuffer.close();
 
@@ -94,7 +85,8 @@ public interface Fileparser {
         double length = 0;
         int lineNumber = 0;
 
-        while ((scanner.hasNextLine() && (line = scanner.nextLine().trim()) != null)) {
+        while ((scanner.hasNextLine() && (line = scanner.nextLine()) != null)) {
+            line = line.trim();
             lineNumber++;
 
             if (lineNumber == 1) {

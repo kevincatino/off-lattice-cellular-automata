@@ -9,18 +9,18 @@ public class Arguments {
     private final double interactionRadius;
     private final int times;
 
-    public Integer[] getMs() {
-        return ms;
+    public Double[] getMs() {
+        return noise;
     }
 
-    private final Integer[] ms;
+    private final Double[] noise;
 
-    public Arguments(int[] numberOfParticles, int boardLength, double interactionRadius, int times, Integer[] ms) {
+    public Arguments(int[] numberOfParticles, int boardLength, double interactionRadius, int times, Double[] noise) {
         this.numberOfParticles = numberOfParticles;
         this.boardLength = boardLength;
         this.interactionRadius = interactionRadius;
         this.times = times;
-        this.ms = ms;
+        this.noise = noise;
     }
 
     public int[] getNumberOfParticles() {
@@ -41,7 +41,7 @@ public class Arguments {
 
     public static Arguments parseArguments(String[] args) {
         List<Integer> numberOfParticles = new ArrayList<>();
-        List<Integer> msList = new ArrayList<>();
+        List<Double> noiseList = new ArrayList<>();
         int boardLength = -1;
         double interactionRadius = -1;
         int times = -1;
@@ -58,7 +58,7 @@ public class Arguments {
                 case "-l" -> boardLength = Integer.parseInt(value);
                 case "-r" -> interactionRadius = Double.parseDouble(value);
                 case "-t" -> times = Integer.parseInt(value);
-                case "-m" -> msList.add(Integer.parseInt(value));
+                case "-noise" -> noiseList.add(Double.parseDouble(value));
                 default -> throw new IllegalArgumentException("Unknown flag: " + flag);
             }
         }
@@ -71,10 +71,10 @@ public class Arguments {
         for (int i = 0; i < numberOfParticles.size(); i++) {
             intArray[i] = numberOfParticles.get(i);
         }
-        Integer[] intArrayM = new Integer[msList.size()];
+        Double[] intArrayM = new Double[noiseList.size()];
 
-        for (int i = 0; i < msList.size(); i++) {
-            intArrayM[i] = msList.get(i);
+        for (int i = 0; i < noiseList.size(); i++) {
+            intArrayM[i] = noiseList.get(i);
         }
         return new Arguments(intArray, boardLength, interactionRadius, times, intArrayM);
     }

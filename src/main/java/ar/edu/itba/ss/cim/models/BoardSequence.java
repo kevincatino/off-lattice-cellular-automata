@@ -10,11 +10,9 @@ import java.util.*;
 public class BoardSequence implements Iterable<Board> {
     private final TemporalCoordinates temporalCoordinatesList;
 
-
     private final Set<Particle> particles = new HashSet<>();
 
     private int index;
-
 
     private final Board board;
 

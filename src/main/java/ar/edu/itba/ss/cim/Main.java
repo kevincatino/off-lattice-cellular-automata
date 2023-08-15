@@ -27,7 +27,7 @@ public class Main {
 
         Arguments argsObj;
         if (args.length == 0) {
-            argsObj = new Arguments(new int[]{5},10,1,3, new Integer[]{6,7,8,9,10,11});
+            argsObj = new Arguments(new int[]{5},10,1,3, new Double[]{0.1, 0.2, 0.3, 0.4, 0.5});
         } else {
             // Ejemplo:
             // java -jar ./neighbouring-particles-search-1.0-SNAPSHOT.jar -m 3 -m 4 -n 50 -n 100 -n 500 -n 1000 -l 10 -r 2.5 -t 5
@@ -36,17 +36,17 @@ public class Main {
         int[] numberOfParticles = argsObj.getNumberOfParticles();
         double interactionRadius = argsObj.getInteractionRadius();
         double boardLength = argsObj.getBoardLength();
-        Integer[] ms = argsObj.getMs();
-        double maxSpeed = 5;
+        Double[] noise = argsObj.getMs();
+        double maxSpeed = 0.3;
 
-        if (ms.length == 0) {
-            ms = new Integer[]{null};
+        if (noise.length == 0) {
+            noise = new Double[]{null};
         }
 
-        //Integer M = null;
+        Integer m = null;
         ExecutionStatsWrapper stats = new ExecutionStatsWrapper();
         for (int particlesNumber : numberOfParticles) {
-            for (Integer m : ms) {
+            for (Double n : noise) {
                 FileNamesWrapper fileNameWrapper = Fileparser.generateInputData(particlesNumber, boardLength, maxSpeed);
 
                 String STATIC_FILE_PATH = fileNameWrapper.StaticFileName;

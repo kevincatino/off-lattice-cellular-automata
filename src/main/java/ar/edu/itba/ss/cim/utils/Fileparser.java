@@ -51,8 +51,9 @@ public interface Fileparser {
 
                double x = rand.nextDouble(boardLength);
                 double y = rand.nextDouble(boardLength);
-                double vx = rand.nextDouble(maxSpeed);
-                double vy = rand.nextDouble(maxSpeed);
+                double angle = rand.nextDouble(2); //angle is in radians
+                double vx = maxSpeed*Math.cos(angle*Math.PI);
+                double vy = maxSpeed*Math.sin(angle*Math.PI);
                 dynamicFileBuffer.write(String.format("%f %f %f %f\n",x,y, vx, vy));
             }
 

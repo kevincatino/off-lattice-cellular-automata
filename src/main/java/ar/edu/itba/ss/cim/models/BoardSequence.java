@@ -82,7 +82,7 @@ public class BoardSequence implements Iterable<Board> {
         return new Iterator<Board>() {
             @Override
             public boolean hasNext() {
-                return true;
+                return index < 3; // TODO change
             }
 
             @Override
@@ -90,6 +90,7 @@ public class BoardSequence implements Iterable<Board> {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
+                index++; // TODO change
                 return getNextBoard();
             }
         };

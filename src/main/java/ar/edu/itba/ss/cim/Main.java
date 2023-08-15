@@ -55,9 +55,6 @@ public class Main {
                 TemporalCoordinates temporalCoordinates = Fileparser.parseDynamicFile(DYNAMIC_FILE_PATH);
                 BoardSequence boardSequence = new BoardSequence(staticStats, temporalCoordinates, m, interactionRadius, Board.BoundaryConditions.NOT_PERIODIC);
                 int actualM = boardSequence.getM();
-                Iterator<Board> boardIterator = boardSequence.iterator();
-                int idx = 0;
-                int stop = 3;
                 for (Board b : boardSequence) {
                     long start = System.currentTimeMillis();
                     b.getNeighbours(Board.Method.BRUTE_FORCE);
@@ -73,9 +70,6 @@ public class Main {
 
                     stats.addStats(particlesNumber, bruteForceComputationTime, cimComputationTime, actualM);
 
-                    idx++;
-                    if (idx == stop)
-                        break;
                 }
 
                 boardSequence.writeToFile("sequence" + fileNameWrapper.getId() + ".json");

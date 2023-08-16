@@ -1,4 +1,3 @@
-
 class Particle:
     def __init__(self, particle_id: int, x: float, y: float, radius: float):
         self.id = particle_id
@@ -41,3 +40,16 @@ class MTimeMeasures:
         self.max = []
         self.min = []
         self.avg = []
+
+
+class ParticleVelocity:
+    def __init__(self, time, l):
+        self.l = l
+        self.time = time
+        self.id = []
+        self.x = []
+        self.y = []
+        self.vx = []
+        self.vy = []
+        self.angle = []
+        self.length = []

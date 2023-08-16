@@ -1,6 +1,9 @@
 import matplotlib
 import matplotlib.pyplot as plt
+import numpy as np
 from matplotlib.patches import Circle
+import matplotlib.colors as colors
+import matplotlib.cm as cmx
 
 from visualization.models import Board, TimeMeasures, MTimeMeasures
 
@@ -93,6 +96,7 @@ def plot_times(time_measures: TimeMeasures):
     plt.legend()
     plt.show()
 
+
 def plot_m_times(time_measures: MTimeMeasures):
     fig, ax = plt.subplots()
 
@@ -104,4 +108,38 @@ def plot_m_times(time_measures: MTimeMeasures):
     ax.set_title('Computation time for different M')
     ax.grid(True)
     plt.legend()
+    plt.show()
+
+
+# https://stackoverflow.com/questions/18748328/plotting-arrows-with-different-color-in-matplotlib
+def plot_particles_velocity(particles_velocity_board):
+    p = particles_velocity_board
+
+    cmap = plt.cm.jet
+
+    cNorm = colors.Normalize(vmin=np.min(-np.pi), vmax=np.max(np.pi))
+
+    scalarMap = cmx.ScalarMappable(norm=cNorm, cmap=cmap)
+
+    for i in range(0, len(p.vx)):
+        p.angle[i] = scalarMap.to_rgba(p.angle[i])
+
+    # fig, ax = plt.subplots()
+
+    fig = plt.figure()
+    ax = fig.add_axes([0.1, 0.1, 0.7, 0.85])  # [left, bottom, width, height]
+    axc = fig.add_axes([0.85, 0.10, 0.05, 0.85])
+
+    q = ax.quiver(p.x, p.y, p.vx, p.vy, color=p.angle)
+
+    cb1 = matplotlib.colorbar.ColorbarBase(axc, cmap=cmap,
+                                    norm=cNorm, orientation='vertical')
+
+    ax.set_xlabel('x')
+    ax.set_ylabel('y')
+    ax.set_ylim(0, p.l)
+    ax.set_xlim(0, p.l)
+    ax.set_title('Particles for time ' + str(p.time))
+    ax.grid(True)
+
     plt.show()

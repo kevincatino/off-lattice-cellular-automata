@@ -99,3 +99,19 @@ def parse_particle_velocity():
         time_velocity_list.append(particle)
 
     return time_velocity_list
+
+
+def parse_density():
+    f = open('../density.json')
+
+    measures = json.load(f)
+
+    density_list = []
+    for measure in measures:
+        m = models.DensityMeasures(measure['n'])
+        for p in measure['values']:
+            m.va.append(p['va'])
+            m.density.append(p['density'])
+        density_list.append(m)
+
+    return density_list

@@ -53,3 +53,10 @@ class ParticleVelocity:
         self.vy = []
         self.angle = []
         self.length = []
+
+
+class DensityMeasures:
+    def __init__(self, n):
+        self.n = n
+        self.va = []
+        self.density = []

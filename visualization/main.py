@@ -3,8 +3,8 @@ from matplotlib.backends._backend_tk import NavigationToolbar2Tk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 from visualization.models import Board, Particle
-from visualization.plots import plot_particles_in_board, plot_times, plot_m_times, plot_particles_velocity
-from visualization.utils import parse_time_json, parse_json, parse_m_time_json, parse_particle_velocity
+from visualization.plots import plot_particles_in_board, plot_times, plot_m_times, plot_particles_velocity, plot_density
+from visualization.utils import parse_time_json, parse_json, parse_m_time_json, parse_particle_velocity, parse_density
 
 # boards = parse_json()
 
@@ -36,6 +36,9 @@ from visualization.utils import parse_time_json, parse_json, parse_m_time_json, 
 # time_measures = parse_m_time_json()
 # plot_m_times(time_measures)
 
-particle_velocity_list = parse_particle_velocity()
-for p in particle_velocity_list:
-    plot_particles_velocity(p)
+# particle_velocity_list = parse_particle_velocity()
+# for p in particle_velocity_list:
+#     plot_particles_velocity(p)
+
+measures_list = parse_density()
+plot_density(measures_list)

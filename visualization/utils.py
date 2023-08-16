@@ -1,4 +1,6 @@
 import json
+import math
+
 import models
 
 
@@ -54,6 +56,7 @@ def parse_time_json():
 
     return time_measures
 
+
 def parse_m_time_json():
     # Opening JSON file
     f = open('../mstats.json')
@@ -71,3 +74,28 @@ def parse_m_time_json():
         time_measures.avg.append(t['time']['avg'])
 
     return time_measures
+
+
+def parse_particle_velocity():
+    f = open('../sequence1.json')
+
+    json_input = json.load(f)
+    l = json_input['l']
+    json_input = json_input['data']
+
+    time_velocity_list = []
+    for t in json_input:
+        particle = models.ParticleVelocity(t['time'], l)
+        for p in t['particles']:
+            particle.id.append(p['id'])
+            particle.x.append(p['coordinates']['x'])
+            particle.y.append(p['coordinates']['y'])
+            vx = p['velocity']['vx']
+            vy = p['velocity']['vy']
+            particle.vx.append(vx)
+            particle.vy.append(vy)
+            particle.angle.append(math.atan2(vy, vx))
+            particle.length.append(math.sqrt(vx**2 + vy**2))
+        time_velocity_list.append(particle)
+
+    return time_velocity_list

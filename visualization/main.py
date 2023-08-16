@@ -3,10 +3,10 @@ from matplotlib.backends._backend_tk import NavigationToolbar2Tk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 from visualization.models import Board, Particle
-from visualization.plots import plot_particles_in_board, plot_times, plot_m_times
-from visualization.utils import parse_time_json, parse_json, parse_m_time_json
+from visualization.plots import plot_particles_in_board, plot_times, plot_m_times, plot_particles_velocity
+from visualization.utils import parse_time_json, parse_json, parse_m_time_json, parse_particle_velocity
 
-boards = parse_json()
+# boards = parse_json()
 
 # board = Board(20, 6, 1, 0,
 #               [
@@ -25,13 +25,17 @@ boards = parse_json()
 #               )
 
 # boards = [board, board1]
-for board in boards:
-    fig = plot_particles_in_board(board)
-    plt.plot()
-    plt.figure(fig.number)
-plt.show()
+# for board in boards:
+#     fig = plot_particles_in_board(board)
+#     plt.plot()
+#     plt.figure(fig.number)
+# plt.show()
+#
+# time_measures = parse_time_json()
+# plot_times(time_measures)
+# time_measures = parse_m_time_json()
+# plot_m_times(time_measures)
 
-time_measures = parse_time_json()
-plot_times(time_measures)
-time_measures = parse_m_time_json()
-plot_m_times(time_measures)
+particle_velocity_list = parse_particle_velocity()
+for p in particle_velocity_list:
+    plot_particles_velocity(p)

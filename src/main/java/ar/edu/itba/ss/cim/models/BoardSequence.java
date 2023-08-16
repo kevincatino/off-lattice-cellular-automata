@@ -149,9 +149,9 @@ public class BoardSequence implements Iterable<Board> {
 
             @Override
             public Board next() {
-                if (!hasNext()) {
-                    throw new NoSuchElementException();
-                }
+//                if (!hasNext()) {
+//                    throw new NoSuchElementException();
+//                }
                 if (index == 0) {
                     index++;
                     return resetBoard();

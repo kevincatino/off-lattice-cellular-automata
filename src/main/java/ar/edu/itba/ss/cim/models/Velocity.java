@@ -37,8 +37,8 @@ public class Velocity {
         double sinAvg = angles.stream().mapToDouble(Math::sin).average().getAsDouble();
         double cosAvg = angles.stream().mapToDouble(Math::cos).average().getAsDouble();
         double nextAngle = Math.atan2(sinAvg,cosAvg) + noiseValue;
-        double nextVx = Math.cos(nextAngle);
-        double nextVy = Math.sin(nextAngle);
+        double nextVx = Math.cos(nextAngle)*mod;
+        double nextVy = Math.sin(nextAngle)*mod;
         return Velocity.of(nextVx, nextVy);
     }
 

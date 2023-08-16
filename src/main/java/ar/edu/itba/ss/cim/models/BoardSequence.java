@@ -8,26 +8,55 @@ import java.io.IOException;
 import java.util.*;
 
 public class BoardSequence implements Iterable<Board> {
-    private final TemporalCoordinates temporalCoordinatesList;
+    private final TemporalCoordinates initialCoordinates;
 
     private final Set<Particle> particles = new HashSet<>();
 
     private int index;
+    private final int periods;
 
     private final Board board;
 
-    // If M is null, then the optimal value of M is utilized
-    public BoardSequence(StaticStats staticStats, TemporalCoordinates initialCoordinates, Integer M, double interactionRadius, Board.BoundaryConditions boundaryConditions) {
-        this.temporalCoordinatesList = initialCoordinates;
+    private final double noise;
+
+
+    public double getVa() {
+        Iterator<Board> it = iterator();
+        Board b = null;
+        while(it.hasNext())
+            b = it.next(); // Podriamos usar un criterio para definir con codigo si llega al estacionario o no
+        if(b == null) {
+            throw new RuntimeException();
+        }
+        double vx = 0;
+        double vy = 0;
+        double vmod = -1;
+        Collection<Particle> particles = b.getAllParticles();
+        for (Particle p : particles) {
+            Velocity v = p.getVelocity();
+            vx += v.getVx();
+            vy += v.getVy();
+            if (vmod == -1) {
+                vmod = v.getMod();
+            }
+
+        }
+        double mod = Math.sqrt(Math.pow(vx,2) + Math.pow(vy,2));
+        return mod/(vmod* particles.size()); // TODO check if okay
+    }
+
+    public BoardSequence(StaticStats staticStats, TemporalCoordinates initialCoordinates, double noise, double interactionRadius, Board.BoundaryConditions boundaryConditions, int periods) {
+        this.initialCoordinates = initialCoordinates;
+        this.periods = periods;
+        this.noise = noise;
         Coordinates coordinates = Coordinates.of(0, 0);
+        Velocity velocity = Velocity.of(0,0);
         for (Map.Entry<Integer, Properties> idProp : staticStats.getIdPropertyPairs()) {
             Properties properties = idProp.getValue();
-            Particle particle = new Particle(coordinates, properties);
+            Particle particle = new Particle(coordinates,velocity, properties);
             particles.add(particle);
         }
-        if (M == null) {
-            M = Board.computeOptimalM(staticStats.getBoardLength(),interactionRadius,particles);
-        }
+        int M = Board.computeOptimalM(staticStats.getBoardLength(),interactionRadius,particles);
         if (staticStats.getParticlesQty() != initialCoordinates.getCoordinatesCount()) {
             throw new RuntimeException("Number of particles in static stats and coordinates of temporal coordinates should match");
         }
@@ -50,16 +79,30 @@ public class BoardSequence implements Iterable<Board> {
         return board.getM();
     }
 
+    private Board resetBoard() {
+        board.resetTime();
+        for (Particle particle : particles) {
+            int id = particle.getId();
+            Coordinates coordinates = initialCoordinates.getCoordinates(id);
+            particle.setCoordinates(coordinates);
+            particle.setVelocity(initialCoordinates.getVelocity(id));
+        }
+        board.recomputeParticlesCell();
+        board.getNeighbours(Board.Method.CIM);
+        Particle.resetIdCounter();
+        return board;
+    }
+
 
 
     private Board getNextBoard() {
-        // TODO use formula to compute next state
-        TemporalCoordinates tc = temporalCoordinatesList;
-        board.setTime(tc.getTime());
+        board.increaseTime();
         for (Particle particle : particles) {
-            int id = particle.getId();
-            Coordinates coordinates = tc.getCoordinates(id);
-            particle.setCoordinates(coordinates);
+            Collection<Particle> neighbours = particle.getNeighbours();
+            Coordinates nextCoordinates = particle.getCoordinates().getNext(particle.getVelocity());
+            Velocity nextVelocity = particle.getVelocity().getNext(neighbours, noise);
+            particle.setCoordinates(nextCoordinates);
+            particle.setVelocity(nextVelocity);
         }
         board.recomputeParticlesCell();
         board.getNeighbours(Board.Method.CIM);
@@ -80,7 +123,7 @@ public class BoardSequence implements Iterable<Board> {
         return new Iterator<Board>() {
             @Override
             public boolean hasNext() {
-                return index < 3; // TODO change
+                return index < periods;
             }
 
             @Override
@@ -88,7 +131,11 @@ public class BoardSequence implements Iterable<Board> {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
-                index++; // TODO change
+                if (index == 0) {
+                    index++;
+                    return resetBoard();
+                }
+                index++;
                 return getNextBoard();
             }
         };

@@ -28,6 +28,10 @@ public class TemporalCoordinates {
         return coordinatesById.get(particleId);
     }
 
+    public Velocity getVelocity(int particleId) {
+        return velocityById.get(particleId);
+    }
+
     public int getTime() {
         return time;
     }

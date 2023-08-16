@@ -14,6 +14,16 @@ public class Particle {
     private final int id;
     private Coordinates coordinates;
 
+    public Velocity getVelocity() {
+        return velocity;
+    }
+
+    public void setVelocity(Velocity velocity) {
+        this.velocity = velocity;
+    }
+
+    private Velocity velocity;
+
     private Set<Particle> neighbours;
 
     private final Properties properties;
@@ -27,12 +37,10 @@ public class Particle {
                 '}';
     }
 
-    Particle(double x, double y, Properties properties) {
-        this(Coordinates.of(x, y), properties);
-    }
 
-    Particle(Coordinates coordinates, Properties properties) {
+    Particle(Coordinates coordinates, Velocity velocity, Properties properties) {
         this.id = ID;
+        this.velocity = velocity;
         ID++;
         this.properties = properties;
         this.coordinates = coordinates;
@@ -67,19 +75,12 @@ public class Particle {
         return coordinates;
     }
 
-    public boolean isNeighbourOf(int particleId) {
-        return neighbours.stream().anyMatch(neighbour -> neighbour.getId() == particleId);
-    }
 
     public double getDistanceTo(Particle other) {
         return coordinates.getDistanceTo(other.coordinates);
     }
 
 
-
-    public boolean isNeighbour(int particleId) {
-        return neighbours.stream().anyMatch(neighbour -> neighbour.getId() == particleId);
-    }
 
     public void addNeighbour(Particle particle) {
         this.neighbours.add(particle);

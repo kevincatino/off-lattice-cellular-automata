@@ -101,8 +101,12 @@ public class Board {
         return M;
     }
 
-    public void setTime(int time) {
-        this.time = time;
+    public void increaseTime() {
+        this.time++;
+    }
+
+    public void resetTime() {
+        this.time = 0;
     }
 
 

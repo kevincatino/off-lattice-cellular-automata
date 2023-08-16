@@ -9,6 +9,18 @@ public class Coordinates {
         this.y = y;
     }
 
+
+    public static Coordinates from(Coordinates c) {
+        return Coordinates.of(c.getX(), c.getY());
+    }
+
+
+    public Coordinates getNext(Velocity v) {
+        double nextX = this.x + v.getVx();
+        double nextY = this.y + v.getVy();
+        return Coordinates.of(nextX,nextY);
+    }
+
     public double getDistanceTo(Coordinates c) {
         return Math.sqrt(Math.pow(x - c.x, 2) + Math.pow(y - c.y, 2));
     }

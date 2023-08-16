@@ -7,22 +7,22 @@ import java.util.stream.Collectors;
 
 public class BoardStateDto {
     private final int time;
-    private final Collection<MainParticleDto> particles;
+    private final Collection<ParticleDto> particles;
 
-    private BoardStateDto(int time, Collection<MainParticleDto> particles) {
+    private BoardStateDto(int time, Collection<ParticleDto> particles) {
         this.particles = particles;
         this.time = time;
     }
 
     public static BoardStateDto from(Board board) {
-        return new BoardStateDto(board.getTime(), board.getAllParticles().stream().map(MainParticleDto::from).collect(Collectors.toList()));
+        return new BoardStateDto(board.getTime(), board.getAllParticles().stream().map(ParticleDto::from).collect(Collectors.toList()));
     }
 
     public int getTime() {
         return time;
     }
 
-    public Collection<MainParticleDto> getParticles() {
+    public Collection<ParticleDto> getParticles() {
         return particles;
     }
 }

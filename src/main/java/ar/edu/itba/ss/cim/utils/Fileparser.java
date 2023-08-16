@@ -41,19 +41,19 @@ public interface Fileparser {
         return tc;
     }
 
-    static FileNamesWrapper generateInputData(int numberOfParticles, double boardLength, double maxSpeed) throws IOException {
+    static FileNamesWrapper generateInputData(int numberOfParticles, double boardLength, double speed) throws IOException {
         FileNamesWrapper fileNames = new FileNamesWrapper("static" , "dynamic" );
         FileWriter writer = new FileWriter(fileNames.DynamicFileName);
-
+        double ratio = 1.5;
         Random rand = new Random();
             BufferedWriter dynamicFileBuffer = new BufferedWriter(writer);
             for (int i=0 ; i<numberOfParticles ; i++) {
 
-               double x = rand.nextDouble(boardLength);
-                double y = rand.nextDouble(boardLength);
+                double x = rand.nextDouble(boardLength/ratio) + (boardLength - boardLength/ratio)/2; // Do not wlloe particles to start in the border
+                double y = rand.nextDouble(boardLength/ratio) + (boardLength - boardLength/ratio)/2;
                 double angle = rand.nextDouble(2); //angle is in radians
-                double vx = maxSpeed*Math.cos(angle*Math.PI);
-                double vy = maxSpeed*Math.sin(angle*Math.PI);
+                double vx = speed*Math.cos(angle*Math.PI);
+                double vy = speed*Math.sin(angle*Math.PI);
                 dynamicFileBuffer.write(String.format("%f %f %f %f\n",x,y, vx, vy));
             }
 

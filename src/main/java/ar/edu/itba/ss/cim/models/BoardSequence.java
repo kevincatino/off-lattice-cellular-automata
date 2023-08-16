@@ -19,19 +19,10 @@ public class BoardSequence implements Iterable<Board> {
 
     private final double noise;
 
-
-    public double getVa() {
-        Iterator<Board> it = iterator();
-        Board b = null;
-        while(it.hasNext())
-            b = it.next(); // Podriamos usar un criterio para definir con codigo si llega al estacionario o no
-        if(b == null) {
-            throw new RuntimeException();
-        }
+    private double getCurrentVa(Collection<Particle> particles) {
         double vx = 0;
         double vy = 0;
         double vmod = -1;
-        Collection<Particle> particles = b.getAllParticles();
         for (Particle p : particles) {
             Velocity v = p.getVelocity();
             vx += v.getVx();
@@ -43,6 +34,35 @@ public class BoardSequence implements Iterable<Board> {
         }
         double mod = Math.sqrt(Math.pow(vx,2) + Math.pow(vy,2));
         return mod/(vmod* particles.size()); // TODO check if okay
+    }
+
+    public double getVa() {
+        final double DELTA = 0.1;
+        final int MAX_TIMES = 10000;
+        final int TIMES = 10;
+        int counter = TIMES;
+        int idx = 0;
+        Iterator<Board> it = iterator();
+        Board b = it.next();
+        double prevVa = getCurrentVa(b.getAllParticles());
+        while(true) {
+            idx++;
+            b = it.next();
+            double newVa = getCurrentVa(b.getAllParticles());
+            if (Math.abs(newVa - prevVa) < DELTA) {
+                counter--;
+            } else {
+                counter = TIMES;
+            }
+            prevVa = newVa;
+            if (counter == 0)
+                break;
+            else if (idx == MAX_TIMES) {
+                System.out.println("STABLE VALUE OF va COULD NOT BE FOUND");
+                break;
+            }
+        }
+        return prevVa;
     }
 
     public BoardSequence(StaticStats staticStats, TemporalCoordinates initialCoordinates, double noise, double interactionRadius, Board.BoundaryConditions boundaryConditions, int periods) {

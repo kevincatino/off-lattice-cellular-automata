@@ -15,9 +15,15 @@ public class Coordinates {
     }
 
 
-    public Coordinates getNext(Velocity v) {
+    public Coordinates getNext(Velocity v, double boardLength) {
         double nextX = this.x + v.getVx();
         double nextY = this.y + v.getVy();
+        if (nextX > boardLength) {
+            nextX -=boardLength;
+        }
+        if (nextY > boardLength) {
+            nextY -= boardLength;
+        }
         return Coordinates.of(nextX,nextY);
     }
 

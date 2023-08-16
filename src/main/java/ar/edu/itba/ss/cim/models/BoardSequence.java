@@ -97,9 +97,10 @@ public class BoardSequence implements Iterable<Board> {
 
     private Board getNextBoard() {
         board.increaseTime();
+        double boardLength = getBoardLength();
         for (Particle particle : particles) {
             Collection<Particle> neighbours = particle.getNeighbours();
-            Coordinates nextCoordinates = particle.getCoordinates().getNext(particle.getVelocity());
+            Coordinates nextCoordinates = particle.getCoordinates().getNext(particle.getVelocity(), boardLength);
             Velocity nextVelocity = particle.getVelocity().getNext(neighbours, noise);
             particle.setCoordinates(nextCoordinates);
             particle.setVelocity(nextVelocity);

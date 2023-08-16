@@ -80,8 +80,6 @@ public class Particle {
         return coordinates.getDistanceTo(other.coordinates);
     }
 
-
-
     public void addNeighbour(Particle particle) {
         this.neighbours.add(particle);
     }

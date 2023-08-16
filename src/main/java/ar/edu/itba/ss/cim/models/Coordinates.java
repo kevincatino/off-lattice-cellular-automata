@@ -14,16 +14,20 @@ public class Coordinates {
         return Coordinates.of(c.getX(), c.getY());
     }
 
+    private double wrapAxis(double value, double boardLength) {
+        if (value > boardLength) {
+            value -=boardLength;
+        } else if (value < 0) {
+            value += boardLength;
+        }
 
+        return value;
+    }
     public Coordinates getNext(Velocity v, double boardLength) {
         double nextX = this.x + v.getVx();
         double nextY = this.y + v.getVy();
-        if (nextX > boardLength) {
-            nextX -=boardLength;
-        }
-        if (nextY > boardLength) {
-            nextY -= boardLength;
-        }
+        nextX = wrapAxis(nextX, boardLength);
+        nextY = wrapAxis(nextY, boardLength);
         return Coordinates.of(nextX,nextY);
     }
 

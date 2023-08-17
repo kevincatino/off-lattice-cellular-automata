@@ -37,9 +37,9 @@ public class BoardSequence implements Iterable<Board> {
     }
 
     public double getVa() {
-        final double DELTA = 0.1;
-        final int MAX_TIMES = 10000;
-        final int TIMES = 10;
+        final double DELTA = 0.008;
+        final int MAX_TIMES = 100000;
+        final int TIMES = 80;
         int counter = TIMES;
         int idx = 0;
         Iterator<Board> it = iterator();
@@ -49,14 +49,17 @@ public class BoardSequence implements Iterable<Board> {
             idx++;
             b = it.next();
             double newVa = getCurrentVa(b.getAllParticles());
+//            System.out.printf("prev: %f, new: %f\n", prevVa,newVa);
             if (Math.abs(newVa - prevVa) < DELTA) {
                 counter--;
             } else {
                 counter = TIMES;
             }
             prevVa = newVa;
-            if (counter == 0)
+            if (counter == 0){
+                System.out.println("Times: " + idx);
                 break;
+            }
             else if (idx == MAX_TIMES) {
                 System.out.println("STABLE VALUE OF va COULD NOT BE FOUND");
                 break;

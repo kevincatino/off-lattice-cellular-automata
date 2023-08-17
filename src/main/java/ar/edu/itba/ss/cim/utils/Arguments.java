@@ -1,6 +1,5 @@
 package ar.edu.itba.ss.cim.utils;
 
-import ar.edu.itba.ss.cim.dto.NoiseDataNWrapperDto;
 import ar.edu.itba.ss.cim.helper.FileNamesWrapper;
 import ar.edu.itba.ss.cim.models.Board;
 import ar.edu.itba.ss.cim.models.BoardSequence;
@@ -13,6 +12,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Arguments {
@@ -67,29 +67,48 @@ public class Arguments {
         }
     }
 
+    public static double calculateMedian(double[] values) {
+        Arrays.sort(values);
+
+        int length = values.length;
+        if (length % 2 == 0) {
+            int middleIndex1 = length / 2 - 1;
+            int middleIndex2 = length / 2;
+            return (values[middleIndex1] + values[middleIndex2]) / 2.0;
+        } else {
+            int middleIndex = length / 2;
+            return values[middleIndex];
+        }
+    }
+
     public static void densityRunner(Arguments args) throws IOException {
+        final int ITER = 20;
         int[] numberOfParticles = args.getNumberOfParticles();
         double interactionRadius = args.getInteractionRadius();
         double[] boardLengths = args.getBoardLengths();
         int periods = args.getTimes();
-        double noise = 0;
+        double noise = args.getNoise()[0];
         double maxSpeed = 0.03;
         DensityDataMainWrapper data = new DensityDataMainWrapper();
         for (int particleNumber : numberOfParticles) {
-               for (double l : boardLengths) {
-                    double density = particleNumber/Math.pow(l,2);
-                FileNamesWrapper fileNameWrapper = Fileparser.generateInputData(particleNumber, l, maxSpeed);
+            for (double l : boardLengths) {
+                double density = particleNumber/Math.pow(l,2);
+                for (int i=0 ; i< ITER ; i++) {
 
-                String STATIC_FILE_PATH = fileNameWrapper.StaticFileName;
-                String DYNAMIC_FILE_PATH = fileNameWrapper.DynamicFileName;
-                StaticStats staticStats = Fileparser.parseStaticFile(STATIC_FILE_PATH);
-                TemporalCoordinates temporalCoordinates = Fileparser.parseDynamicFile(DYNAMIC_FILE_PATH);
-                BoardSequence boardSequence = new BoardSequence(staticStats, temporalCoordinates, noise, interactionRadius, Board.BoundaryConditions.NOT_PERIODIC, periods);
-                double va = boardSequence.getVa();
-                data.addData(particleNumber, va, density);
-                Files.delete(Paths.get(STATIC_FILE_PATH));
-                Files.delete(Paths.get(DYNAMIC_FILE_PATH));
-               }
+                    FileNamesWrapper fileNameWrapper = Fileparser.generateInputData(particleNumber, l, maxSpeed);
+
+                    String STATIC_FILE_PATH = fileNameWrapper.StaticFileName;
+                    String DYNAMIC_FILE_PATH = fileNameWrapper.DynamicFileName;
+                    StaticStats staticStats = Fileparser.parseStaticFile(STATIC_FILE_PATH);
+                    TemporalCoordinates temporalCoordinates = Fileparser.parseDynamicFile(DYNAMIC_FILE_PATH);
+                    BoardSequence boardSequence = new BoardSequence(staticStats, temporalCoordinates, noise, interactionRadius, Board.BoundaryConditions.NOT_PERIODIC, periods);
+                    double va = boardSequence.getVa();
+                    Files.delete(Paths.get(STATIC_FILE_PATH));
+                    Files.delete(Paths.get(DYNAMIC_FILE_PATH));
+
+                    data.addData(particleNumber, va, density);
+                }
+            }
         }
         data.writeFile("density.json");
         }
@@ -101,10 +120,12 @@ public class Arguments {
         double[] noise = args.getNoise();
         int periods = args.getTimes();
         double maxSpeed = 0.03;
+        final int ITER = 10;
         NoiseDataMainWrapper data = new NoiseDataMainWrapper();
         for (int particleNumber : numberOfParticles) {
             for (double nois : noise) {
-                FileNamesWrapper fileNameWrapper = Fileparser.generateInputData(particleNumber, boardLength[0], maxSpeed);
+                for (int i=0 ; i< ITER ; i++) {
+                    FileNamesWrapper fileNameWrapper = Fileparser.generateInputData(particleNumber, boardLength[0], maxSpeed);
 
                 String STATIC_FILE_PATH = fileNameWrapper.StaticFileName;
                 String DYNAMIC_FILE_PATH = fileNameWrapper.DynamicFileName;
@@ -115,6 +136,8 @@ public class Arguments {
                 data.addData(particleNumber, va, nois);
                 Files.delete(Paths.get(STATIC_FILE_PATH));
                 Files.delete(Paths.get(DYNAMIC_FILE_PATH));
+                }
+
             }
         }
         data.writeFile("noise.json");

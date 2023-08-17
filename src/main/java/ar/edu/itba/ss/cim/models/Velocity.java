@@ -1,5 +1,6 @@
 package ar.edu.itba.ss.cim.models;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
 import java.util.Set;
@@ -30,10 +31,8 @@ public class Velocity {
 
         Random rand = new Random();
         double noiseValue = noise == 0 ? 0 :  rand.nextDouble(noise) - noise/2;
-        Collection<Double> angles = neighbours.stream().map(p -> Math.atan2(vy, vx)).toList();
-        if (angles.isEmpty()) {
-            return this;
-        }
+        Collection<Double> angles = new ArrayList<>(neighbours.stream().map(p -> Math.atan2(vy, vx)).toList());
+        angles.add(Math.atan2(this.vy,this.vx));
         double sinAvg = angles.stream().mapToDouble(Math::sin).average().getAsDouble();
         double cosAvg = angles.stream().mapToDouble(Math::cos).average().getAsDouble();
         double nextAngle = Math.atan2(sinAvg,cosAvg) + noiseValue;

@@ -83,7 +83,8 @@ public class Board {
             maxRadius = Math.max(radius, maxRadius);
         }
 
-        return (int) Math.floor(boardLength/(interactionRadius + maxRadius*2));
+        int maybeM = (int) Math.floor(boardLength/(interactionRadius + maxRadius*2));
+        return maybeM > 0 ? maybeM : 1;
     }
 
 

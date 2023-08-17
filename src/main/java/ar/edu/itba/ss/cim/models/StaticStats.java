@@ -14,7 +14,11 @@ public class StaticStats {
         return particlesQty;
     }
 
-    private final double boardLength;
+    public void setBoardLength(double boardLength) {
+        this.boardLength = boardLength;
+    }
+
+    private double boardLength;
     private final int particlesQty;
 
     public StaticStats(int particlesQty, double boardLength, Map<Integer, Properties> propertiesByParticleId) {
@@ -26,6 +30,8 @@ public class StaticStats {
         this.particlesQty = particlesQty;
         this.propertiesByParticleId = propertiesByParticleId;
     }
+
+
 
     public Properties getProperty(int id) {
         return propertiesByParticleId.get(id);

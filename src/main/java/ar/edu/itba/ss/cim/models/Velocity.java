@@ -31,7 +31,7 @@ public class Velocity {
 
         Random rand = new Random();
         double noiseValue = noise == 0 ? 0 :  rand.nextDouble(noise) - noise/2;
-        Collection<Double> angles = new ArrayList<>(neighbours.stream().map(p -> Math.atan2(vy, vx)).toList());
+        Collection<Double> angles = new ArrayList<>(neighbours.stream().map(p -> Math.atan2(p.getVelocity().getVy(), p.getVelocity().getVx())).toList());
         angles.add(Math.atan2(this.vy,this.vx));
         double sinAvg = angles.stream().mapToDouble(Math::sin).average().getAsDouble();
         double cosAvg = angles.stream().mapToDouble(Math::cos).average().getAsDouble();

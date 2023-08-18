@@ -82,11 +82,10 @@ public class Arguments {
     }
 
     public static void densityRunner(Arguments args) throws IOException {
-        final int ITER = 20;
+        final int ITER = 5;
         int[] numberOfParticles = args.getNumberOfParticles();
         double interactionRadius = args.getInteractionRadius();
         double[] boardLengths = args.getBoardLengths();
-        double[]
         int periods = args.getTimes();
         double noise = args.getNoise()[0];
         double maxSpeed = 0.03;

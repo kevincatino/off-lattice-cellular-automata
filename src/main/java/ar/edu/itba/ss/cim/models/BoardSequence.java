@@ -38,8 +38,8 @@ public class BoardSequence implements Iterable<Board> {
 
     public double getVa() {
         final double DELTA = 0.008;
-        final int MAX_TIMES = 100000;
-        final int TIMES = 80;
+        final int MAX_TIMES = 1000;
+        final int TIMES = 500;
         int counter = TIMES;
         int idx = 0;
         Iterator<Board> it = iterator();
@@ -121,12 +121,21 @@ public class BoardSequence implements Iterable<Board> {
     private Board getNextBoard() {
         board.increaseTime();
         double boardLength = getBoardLength();
+        Map<Particle,Velocity> nextVelocities = new HashMap<>();
+        Map<Particle,Coordinates> nextCoordinates = new HashMap<>();
         for (Particle particle : particles) {
             Collection<Particle> neighbours = particle.getNeighbours();
-            Coordinates nextCoordinates = particle.getCoordinates().getNext(particle.getVelocity(), boardLength);
+            Coordinates nextCoordinate = particle.getCoordinates().getNext(particle.getVelocity(), boardLength);
             Velocity nextVelocity = particle.getVelocity().getNext(neighbours, noise);
-            particle.setCoordinates(nextCoordinates);
+            nextVelocities.put(particle, nextVelocity);
+            nextCoordinates.put(particle, nextCoordinate);
+            particle.setCoordinates(nextCoordinate);
             particle.setVelocity(nextVelocity);
+        }
+        for (Map.Entry<Particle,Velocity> entry : nextVelocities.entrySet()) {
+            Particle particle = entry.getKey();
+            particle.setVelocity(entry.getValue());
+            particle.setCoordinates(nextCoordinates.get(particle));
         }
         board.recomputeParticlesCell();
         board.getNeighbours(Board.Method.CIM);

@@ -40,8 +40,8 @@ from visualization.utils import parse_time_json, parse_json, parse_m_time_json, 
 # for p in particle_velocity_list:
 #     plot_particles_velocity(p)
 
-# measures_list = parse_density()
-# plot_density(measures_list)
+measures_list = parse_density()
+plot_density(measures_list)
 
-measures_list = parse_noise()
-plot_noise(measures_list)
+# measures_list = parse_noise()
+# plot_noise(measures_list)

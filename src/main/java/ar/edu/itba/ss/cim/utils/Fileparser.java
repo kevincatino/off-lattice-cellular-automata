@@ -63,7 +63,7 @@ public interface Fileparser {
             BufferedWriter staticFileBuffer = new BufferedWriter(writer);
             staticFileBuffer.write(String.format("%d\n%f\n",numberOfParticles,boardLength));
             for (int i=0 ; i<numberOfParticles ; i++) {
-               double r = rand.nextDouble(boardLength/200);
+               double r = 0;
                 staticFileBuffer.write(String.format("%f\n",r));
             }
 

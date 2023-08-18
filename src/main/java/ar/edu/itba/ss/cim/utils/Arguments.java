@@ -86,6 +86,7 @@ public class Arguments {
         int[] numberOfParticles = args.getNumberOfParticles();
         double interactionRadius = args.getInteractionRadius();
         double[] boardLengths = args.getBoardLengths();
+        double[]
         int periods = args.getTimes();
         double noise = args.getNoise()[0];
         double maxSpeed = 0.03;
@@ -122,10 +123,10 @@ public class Arguments {
         double maxSpeed = 0.03;
         final int ITER = 10;
         NoiseDataMainWrapper data = new NoiseDataMainWrapper();
-        for (int particleNumber : numberOfParticles) {
+        for (int i=0 ; i< boardLength.length ; i++) {
             for (double nois : noise) {
-                for (int i=0 ; i< ITER ; i++) {
-                    FileNamesWrapper fileNameWrapper = Fileparser.generateInputData(particleNumber, boardLength[0], maxSpeed);
+                for (int j=0 ; j< ITER ; j++) {
+                    FileNamesWrapper fileNameWrapper = Fileparser.generateInputData(numberOfParticles[i], boardLength[i], maxSpeed);
 
                 String STATIC_FILE_PATH = fileNameWrapper.StaticFileName;
                 String DYNAMIC_FILE_PATH = fileNameWrapper.DynamicFileName;
@@ -133,7 +134,7 @@ public class Arguments {
                 TemporalCoordinates temporalCoordinates = Fileparser.parseDynamicFile(DYNAMIC_FILE_PATH);
                 BoardSequence boardSequence = new BoardSequence(staticStats, temporalCoordinates, nois, interactionRadius, Board.BoundaryConditions.NOT_PERIODIC, periods);
                 double va = boardSequence.getVa();
-                data.addData(particleNumber, va, nois);
+                data.addData(numberOfParticles[i], va, nois);
                 Files.delete(Paths.get(STATIC_FILE_PATH));
                 Files.delete(Paths.get(DYNAMIC_FILE_PATH));
                 }

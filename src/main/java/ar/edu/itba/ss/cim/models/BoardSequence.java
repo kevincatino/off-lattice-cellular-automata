@@ -39,7 +39,7 @@ public class BoardSequence implements Iterable<Board> {
     public double getVa() {
         final double DELTA = 0.008;
         final int MAX_TIMES = 1000;
-        final int TIMES = 500;
+        final int TIMES = 100;
         int counter = TIMES;
         int idx = 0;
         Iterator<Board> it = iterator();

@@ -149,7 +149,7 @@ def plot_density(measures):
     fig, ax = plt.subplots()
 
     m = measures
-    error = [m.vamin, m.vamax]
+    error = [m.std, m.std]
     ax.errorbar(m.density, m.vaavg, yerr=error, fmt='-o', label='L=20')
 
     ax.set_ylabel('va')
@@ -163,7 +163,7 @@ def plot_noise(measures):
     fig, ax = plt.subplots()
 
     for m in measures:
-        error = [m.vamin, m.vamax]
+        error = [m.std, m.std]
         ax.errorbar(m.noise, m.vaavg, yerr=error, fmt='-o', label='N='+str(m.n))
 
     ax.set_ylabel('va')

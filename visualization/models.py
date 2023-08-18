@@ -60,6 +60,7 @@ class DensityMeasures:
         self.vamin = []
         self.vamax = []
         self.vaavg = []
+        self.std = []
         self.density = []
 
 
@@ -69,4 +70,5 @@ class NoiseMeasures:
         self.vamin = []
         self.vamax = []
         self.vaavg = []
+        self.std = []
         self.noise = []

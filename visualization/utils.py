@@ -112,6 +112,7 @@ def parse_density():
         m.vaavg.append(p['va']['avg'])
         m.vamin.append(p['va']['avg']-p['va']['min'])
         m.vamax.append(p['va']['max']-p['va']['avg'])
+        m.std.append(p['va']['std'])
         m.density.append(p['density'])
 
     return m
@@ -129,6 +130,7 @@ def parse_noise():
             m.vaavg.append(p['va']['avg'])
             m.vamin.append(p['va']['avg']-p['va']['min'])
             m.vamax.append(p['va']['max']-p['va']['avg'])
+            m.std.append(p['va']['std'])
             m.noise.append(p['noise'])
         noise_list.append(m)
 

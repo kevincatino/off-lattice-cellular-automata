@@ -1,5 +1,7 @@
 package ar.edu.itba.ss.cim.dto;
 
+import ar.edu.itba.ss.cim.utils.MathHelper;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -30,7 +32,9 @@ public class NoiseDataNWrapperDto {
             double avg = data.stream().mapToDouble(Double::doubleValue).average().orElse(Double.NaN);
             double min = data.stream().mapToDouble(Double::doubleValue).min().orElse(Double.NaN);
             double max = data.stream().mapToDouble(Double::doubleValue).max().orElse(Double.NaN);
-            values.add(new NoiseDataDto(new TimeStatsDto(max,min, avg), entry.getKey()));
+
+            double std = MathHelper.calculateSD(data.stream().mapToDouble(Double::doubleValue).toArray());
+            values.add(new NoiseDataDto(new TimeStatsDto(max,min, avg, std), entry.getKey()));
         }
     }
 

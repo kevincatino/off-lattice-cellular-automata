@@ -5,10 +5,17 @@ public class TimeStatsDto {
     private final double min;
     private final double avg;
 
-    public TimeStatsDto(double max, double min, double avg) {
+    private final double std;
+
+    public TimeStatsDto(double max, double min, double avg, double std) {
         this.max = max;
         this.min = min;
+        this.std = std;
         this.avg = avg;
+    }
+
+    public double getStd() {
+        return std;
     }
 
     public double getMax() {

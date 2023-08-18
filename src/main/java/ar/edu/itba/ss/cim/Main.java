@@ -12,7 +12,7 @@ public class Main {
 
         Arguments argsObj;
         if (args.length == 0) {
-            argsObj = new Arguments(new int[]{400,800,1200,1600,2200,3200}, new double[]{20}, 1, 3000, new double[]{3}, Arguments::densityRunner); // Change densityRunner to regularRunner or noiseRunner
+            argsObj = new Arguments(new int[]{400,800,1200,1600,2200,2800,3200}, new double[]{20}, 1, 3000, new double[]{2}, Arguments::densityRunner); // Change densityRunner to regularRunner or noiseRunner
         } else {
             argsObj = Arguments.parseArguments(args);
         }

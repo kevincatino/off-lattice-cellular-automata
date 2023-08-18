@@ -148,9 +148,9 @@ def plot_particles_velocity(particles_velocity_board):
 def plot_density(measures):
     fig, ax = plt.subplots()
 
-    for m in measures:
-        error = [m.vamin, m.vamax]
-        ax.errorbar(m.density, m.vaavg, yerr=error, fmt='-o', label='N='+str(m.n))
+    m = measures
+    error = [m.vamin, m.vamax]
+    ax.errorbar(m.density, m.vaavg, yerr=error, fmt='-o', label='L=20')
 
     ax.set_ylabel('va')
     ax.set_xlabel('densidad [N/L^2]')

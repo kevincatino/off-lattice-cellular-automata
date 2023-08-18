@@ -149,12 +149,26 @@ def plot_density(measures):
     fig, ax = plt.subplots()
 
     for m in measures:
-        error = [[0] * len(m.va), [0] * len(m.va)]
-        ax.errorbar(m.density, m.va, yerr=error, fmt='-o', label='N='+str(m.n))
+        error = [m.vamin, m.vamax]
+        ax.errorbar(m.density, m.vaavg, yerr=error, fmt='-o', label='N='+str(m.n))
 
     ax.set_ylabel('va')
     ax.set_xlabel('densidad [N/L^2]')
     ax.set_title('Va vs densidad, variando la cantidad de particulas')
+    ax.grid(True)
+    plt.legend()
+    plt.show()
+
+def plot_noise(measures):
+    fig, ax = plt.subplots()
+
+    for m in measures:
+        error = [m.vamin, m.vamax]
+        ax.errorbar(m.noise, m.vaavg, yerr=error, fmt='-o', label='N='+str(m.n))
+
+    ax.set_ylabel('va')
+    ax.set_xlabel('ruido')
+    ax.set_title('Va vs ruido, densidad constante')
     ax.grid(True)
     plt.legend()
     plt.show()

@@ -110,8 +110,28 @@ def parse_density():
     for measure in measures:
         m = models.DensityMeasures(measure['n'])
         for p in measure['values']:
-            m.va.append(p['va'])
+            m.vaavg.append(p['va']['avg'])
+            m.vamin.append(p['va']['avg']-p['va']['min'])
+            m.vamax.append(p['va']['max']-p['va']['avg'])
             m.density.append(p['density'])
         density_list.append(m)
 
     return density_list
+
+
+def parse_noise():
+    f = open('../noise.json')
+
+    measures = json.load(f)
+
+    noise_list = []
+    for measure in measures:
+        m = models.NoiseMeasures(measure['n'])
+        for p in measure['values']:
+            m.vaavg.append(p['va']['avg'])
+            m.vamin.append(p['va']['avg']-p['va']['min'])
+            m.vamax.append(p['va']['max']-p['va']['avg'])
+            m.noise.append(p['noise'])
+        noise_list.append(m)
+
+    return noise_list

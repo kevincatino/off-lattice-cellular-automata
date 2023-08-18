@@ -58,5 +58,16 @@ class ParticleVelocity:
 class DensityMeasures:
     def __init__(self, n):
         self.n = n
-        self.va = []
+        self.vamin = []
+        self.vamax = []
+        self.vaavg = []
         self.density = []
+
+
+class NoiseMeasures:
+    def __init__(self, n):
+        self.n = n
+        self.vamin = []
+        self.vamax = []
+        self.vaavg = []
+        self.noise = []

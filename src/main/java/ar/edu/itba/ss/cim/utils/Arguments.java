@@ -110,7 +110,7 @@ public class Arguments {
                 }
             }
         }
-        data.writeFile("density_backup.json");
+        data.writeFile("density_backup_2000.json");
         }
 
     public static void noiseRunner(Arguments args) throws IOException {

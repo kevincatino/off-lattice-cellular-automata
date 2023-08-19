@@ -9,13 +9,20 @@ public class BoardStateDto {
     private final int time;
     private final Collection<ParticleDto> particles;
 
-    private BoardStateDto(int time, Collection<ParticleDto> particles) {
+    public double getVa() {
+        return va;
+    }
+
+    private final double va;
+
+    private BoardStateDto(int time, Collection<ParticleDto> particles, double va) {
         this.particles = particles;
         this.time = time;
+        this.va = va;
     }
 
     public static BoardStateDto from(Board board) {
-        return new BoardStateDto(board.getTime(), board.getAllParticles().stream().map(ParticleDto::from).collect(Collectors.toList()));
+        return new BoardStateDto(board.getTime(), board.getAllParticles().stream().map(ParticleDto::from).collect(Collectors.toList()), board.getCurrentVa());
     }
 
     public int getTime() {

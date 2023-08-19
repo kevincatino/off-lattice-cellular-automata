@@ -19,22 +19,7 @@ public class BoardSequence implements Iterable<Board> {
 
     private final double noise;
 
-    private double getCurrentVa(Collection<Particle> particles) {
-        double vx = 0;
-        double vy = 0;
-        double vmod = -1;
-        for (Particle p : particles) {
-            Velocity v = p.getVelocity();
-            vx += v.getVx();
-            vy += v.getVy();
-            if (vmod == -1) {
-                vmod = v.getMod();
-            }
 
-        }
-        double mod = Math.sqrt(Math.pow(vx,2) + Math.pow(vy,2));
-        return mod/(vmod* particles.size()); // TODO check if okay
-    }
 
     public double getVa() {
         final double DELTA = 0.008;
@@ -44,11 +29,11 @@ public class BoardSequence implements Iterable<Board> {
         int idx = 0;
         Iterator<Board> it = iterator();
         Board b = it.next();
-        double prevVa = getCurrentVa(b.getAllParticles());
+        double prevVa = b.getCurrentVa();
         while(true) {
             idx++;
             b = it.next();
-            double newVa = getCurrentVa(b.getAllParticles());
+            double newVa = b.getCurrentVa();
 //            System.out.printf("prev: %f, new: %f\n", prevVa,newVa);
             if (Math.abs(newVa - prevVa) < DELTA) {
                 counter--;

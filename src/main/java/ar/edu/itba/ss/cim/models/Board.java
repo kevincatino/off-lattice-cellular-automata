@@ -74,6 +74,24 @@ public class Board {
         }
     }
 
+
+    public double getCurrentVa() {
+        double vx = 0;
+        double vy = 0;
+        double vmod = -1;
+        for (Particle p : boardParticles) {
+            Velocity v = p.getVelocity();
+            vx += v.getVx();
+            vy += v.getVy();
+            if (vmod == -1) {
+                vmod = v.getMod();
+            }
+
+        }
+        double mod = Math.sqrt(Math.pow(vx,2) + Math.pow(vy,2));
+        return mod/(vmod* boardParticles.size()); // TODO check if okay
+    }
+
     public static int computeOptimalM(double boardLength, double interactionRadius, Collection<Particle> particles) {
         Iterator<Particle> it = particles.iterator();
         double maxRadius = it.next().getRadius();

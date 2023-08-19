@@ -150,13 +150,13 @@ def plot_particles_velocity(particles_velocity_list, save_video=False):
             plt.close()
             continue
         folder_name = "output"  # Replace with your desired folder name
-
-        if not checked and not os.path.exists(folder_name):
-            checked = True
-            os.makedirs(folder_name)
-            print(f"Folder '{folder_name}' created.")
-        else:
-            print(f"Folder '{folder_name}' already exists.")
+        if not checked:
+            if not checked and not os.path.exists(folder_name):
+                checked = True
+                os.makedirs(folder_name)
+                print(f"Folder '{folder_name}' created.")
+            else:
+                print(f"Folder '{folder_name}' already exists.")
 
         filename = f"{folder_name}/plot_{idx:04d}.png"
         print(filename)
@@ -191,6 +191,18 @@ def plot_density(measures):
     ax.set_ylabel('va')
     ax.set_xlabel('densidad [N/L^2]')
     ax.set_title('Va vs densidad, variando la cantidad de particulas')
+    ax.grid(True)
+    plt.legend()
+    plt.show()
+
+def plot_va(measures):
+    fig, ax = plt.subplots()
+
+    ax.errorbar([v['time'] for v in measures['data']], [v['va'] for v in measures['data']], fmt='.', label='L=20')
+
+    ax.set_ylabel('va')
+    ax.set_xlabel('tiempo')
+    ax.set_title('Va vs tiempo')
     ax.grid(True)
     plt.legend()
     plt.show()

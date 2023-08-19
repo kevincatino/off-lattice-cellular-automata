@@ -116,6 +116,7 @@ def plot_m_times(time_measures: MTimeMeasures):
 # https://stackoverflow.com/questions/18748328/plotting-arrows-with-different-color-in-matplotlib
 def plot_particles_velocity(particles_velocity_list, save_video=False):
     images = []
+    checked = False
     for idx, p in enumerate(particles_velocity_list):
         cmap = plt.cm.jet
 
@@ -148,8 +149,16 @@ def plot_particles_velocity(particles_velocity_list, save_video=False):
             plt.show()
             plt.close()
             continue
+        folder_name = "output"  # Replace with your desired folder name
 
-        filename = f"plot_{idx:04d}.png"
+        if not checked and not os.path.exists(folder_name):
+            checked = True
+            os.makedirs(folder_name)
+            print(f"Folder '{folder_name}' created.")
+        else:
+            print(f"Folder '{folder_name}' already exists.")
+
+        filename = f"{folder_name}/plot_{idx:04d}.png"
         print(filename)
         try:
             os.remove(filename)
@@ -159,7 +168,7 @@ def plot_particles_velocity(particles_velocity_list, save_video=False):
         images.append(filename)
         plt.close()
 
-        output_video_filename = "output_video.mp4"
+        output_video_filename = f"{folder_name}/output_video.mp4"
         try:
             os.remove(output_video_filename)
         except OSError:

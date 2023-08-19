@@ -82,7 +82,7 @@ public class Arguments {
     }
 
     public static void densityRunner(Arguments args) throws IOException {
-        final int ITER = 5;
+        final int ITER = 10;
         int[] numberOfParticles = args.getNumberOfParticles();
         double interactionRadius = args.getInteractionRadius();
         double[] boardLengths = args.getBoardLengths();
@@ -110,7 +110,7 @@ public class Arguments {
                 }
             }
         }
-        data.writeFile("density.json");
+        data.writeFile("density_backup.json");
         }
 
     public static void noiseRunner(Arguments args) throws IOException {

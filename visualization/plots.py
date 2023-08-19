@@ -1,9 +1,11 @@
 import matplotlib
+import os
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.patches import Circle
 import matplotlib.colors as colors
 import matplotlib.cm as cmx
+import imageio
 
 from visualization.models import Board, TimeMeasures, MTimeMeasures
 
@@ -112,37 +114,62 @@ def plot_m_times(time_measures: MTimeMeasures):
 
 
 # https://stackoverflow.com/questions/18748328/plotting-arrows-with-different-color-in-matplotlib
-def plot_particles_velocity(particles_velocity_board):
-    p = particles_velocity_board
+def plot_particles_velocity(particles_velocity_list, save_video=False):
+    images = []
+    for idx, p in enumerate(particles_velocity_list):
+        cmap = plt.cm.jet
 
-    cmap = plt.cm.jet
+        cNorm = colors.Normalize(vmin=np.min(-np.pi), vmax=np.max(np.pi))
 
-    cNorm = colors.Normalize(vmin=np.min(-np.pi), vmax=np.max(np.pi))
+        scalarMap = cmx.ScalarMappable(norm=cNorm, cmap=cmap)
 
-    scalarMap = cmx.ScalarMappable(norm=cNorm, cmap=cmap)
+        for i in range(0, len(p.vx)):
+            p.angle[i] = scalarMap.to_rgba(p.angle[i])
 
-    for i in range(0, len(p.vx)):
-        p.angle[i] = scalarMap.to_rgba(p.angle[i])
+        # fig, ax = plt.subplots()
 
-    # fig, ax = plt.subplots()
+        fig = plt.figure()
+        ax = fig.add_axes([0.1, 0.1, 0.7, 0.85])  # [left, bottom, width, height]
+        axc = fig.add_axes([0.85, 0.10, 0.05, 0.85])
 
-    fig = plt.figure()
-    ax = fig.add_axes([0.1, 0.1, 0.7, 0.85])  # [left, bottom, width, height]
-    axc = fig.add_axes([0.85, 0.10, 0.05, 0.85])
+        q = ax.quiver(p.x, p.y, p.vx, p.vy, color=p.angle)
 
-    q = ax.quiver(p.x, p.y, p.vx, p.vy, color=p.angle)
+        cb1 = matplotlib.colorbar.ColorbarBase(axc, cmap=cmap,
+                                        norm=cNorm, orientation='vertical')
 
-    cb1 = matplotlib.colorbar.ColorbarBase(axc, cmap=cmap,
-                                    norm=cNorm, orientation='vertical')
+        ax.set_xlabel('x')
+        ax.set_ylabel('y')
+        ax.set_ylim(0, p.l)
+        ax.set_xlim(0, p.l)
+        ax.set_title('Particles for time ' + str(p.time))
+        ax.grid(True)
 
-    ax.set_xlabel('x')
-    ax.set_ylabel('y')
-    ax.set_ylim(0, p.l)
-    ax.set_xlim(0, p.l)
-    ax.set_title('Particles for time ' + str(p.time))
-    ax.grid(True)
+        if not save_video:
+            plt.show()
+            plt.close()
+            continue
 
-    plt.show()
+        filename = f"plot_{idx:04d}.png"
+        print(filename)
+        try:
+            os.remove(filename)
+        except OSError:
+            pass
+        plt.savefig(filename)
+        images.append(filename)
+        plt.close()
+
+        output_video_filename = "output_video.mp4"
+        try:
+            os.remove(output_video_filename)
+        except OSError:
+            pass
+        fps = 5  # Frames per second
+
+        with imageio.get_writer(output_video_filename, fps=fps) as writer:
+            for image_filename in images:
+                image = imageio.imread(image_filename)
+                writer.append_data(image)
 
 
 def plot_density(measures):

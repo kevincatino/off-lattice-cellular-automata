@@ -23,30 +23,9 @@ class BoardSequence {
     - Board getNextBoard()
 }
 
-class Velocity {
-- vx: double
-- vy: double
-+ Velocity getNext(neighbours: Collection<Particle>, noise: double)
-}
-
-class Coordinates {
-- x: double
-- y: double
-+ Coordinate getNext(velocity: Velocity, boardLength: double)
-}
-
-class Particle {
-- coordinates: Coordinates
-- velocity: Velocity
-- neighbours: Collection<Particle>
-+ void addNeighbour(particle: Particle)
-+ void clearNeighbours()
-+ Collection<Particle> getNeighbours()
-}
 
 BoardSequence *- Board
 Board *- BoundaryCondition
-Particle *- Coordinates
-Particle *- Velocity
+
 
 @enduml

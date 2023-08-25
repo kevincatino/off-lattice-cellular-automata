@@ -6,15 +6,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 public class DensityDataMainWrapper {
     private final Map<Integer, DensityDataNWrapperDto> data = new TreeMap<>();
 
-    public void addData(int n, double va, double density) {
+    public void addData(int n, List<Double> vas, double density) {
         data.putIfAbsent(n, new DensityDataNWrapperDto(n));
-        data.get(n).addData(va, density);
+        data.get(n).addData(vas, density);
     }
 
     public void writeFile(String path) throws IOException {

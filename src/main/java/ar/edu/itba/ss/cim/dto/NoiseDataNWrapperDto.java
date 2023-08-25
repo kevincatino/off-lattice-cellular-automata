@@ -5,6 +5,7 @@ import ar.edu.itba.ss.cim.utils.MathHelper;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -38,8 +39,8 @@ public class NoiseDataNWrapperDto {
         }
     }
 
-    public void addData(double va, double noise) {
+    public void addData(List<Double> vas, double noise) {
         rawValues.putIfAbsent(noise,new HashSet<>());
-        rawValues.get(noise).add(va);
+        rawValues.get(noise).addAll(vas);
     }
 }

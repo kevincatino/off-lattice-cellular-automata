@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -14,9 +15,9 @@ public class NoiseDataMainWrapper {
     private final Map<Integer, NoiseDataNWrapperDto> data = new TreeMap<>();
 
 
-    public void addData(int n, double va, double noise) {
+    public void addData(int n, List<Double> vas, double noise) {
         data.putIfAbsent(n, new NoiseDataNWrapperDto(n));
-        data.get(n).addData(va, noise);
+        data.get(n).addData(vas, noise);
     }
 
     public void writeFile(String path) throws IOException {

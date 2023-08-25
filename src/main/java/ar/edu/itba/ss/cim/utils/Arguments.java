@@ -128,11 +128,11 @@ public class Arguments {
                     StaticStats staticStats = Fileparser.parseStaticFile(STATIC_FILE_PATH);
                     TemporalCoordinates temporalCoordinates = Fileparser.parseDynamicFile(DYNAMIC_FILE_PATH);
                     BoardSequence boardSequence = new BoardSequence(staticStats, temporalCoordinates, noise, interactionRadius, Board.BoundaryConditions.NOT_PERIODIC, periods);
-                    double va = boardSequence.getVa();
+                    List<Double> vaValues = boardSequence.getVa();
                     Files.delete(Paths.get(STATIC_FILE_PATH));
                     Files.delete(Paths.get(DYNAMIC_FILE_PATH));
 
-                    data.addData(particleNumber, va, density);
+                    data.addData(particleNumber, vaValues, density);
                 }
             }
         }
@@ -158,8 +158,8 @@ public class Arguments {
                 StaticStats staticStats = Fileparser.parseStaticFile(STATIC_FILE_PATH);
                 TemporalCoordinates temporalCoordinates = Fileparser.parseDynamicFile(DYNAMIC_FILE_PATH);
                 BoardSequence boardSequence = new BoardSequence(staticStats, temporalCoordinates, nois, interactionRadius, Board.BoundaryConditions.NOT_PERIODIC, periods);
-                double va = boardSequence.getVa();
-                data.addData(numberOfParticles[i], va, nois);
+                List<Double> vas = boardSequence.getVa();
+                data.addData(numberOfParticles[i], vas, nois);
                 Files.delete(Paths.get(STATIC_FILE_PATH));
                 Files.delete(Paths.get(DYNAMIC_FILE_PATH));
                 }

@@ -2,6 +2,7 @@ package ar.edu.itba.ss.cim.models;
 
 import ar.edu.itba.ss.cim.dto.BoardSequenceDto;
 import ar.edu.itba.ss.cim.dto.VaDto;
+import ar.edu.itba.ss.cim.utils.MathHelper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
@@ -22,9 +23,9 @@ public class BoardSequence implements Iterable<Board> {
 
 
 
-    public double getVa() {
-        final int TIMES = 5000;
-        final int TIMES_AVG = 1000;
+    public List<Double> getVa() {
+        final int TIMES = 4000;
+        final int TIMES_AVG = 2000;
         int idx = 0;
         Iterator<Board> it = iterator();
         Board b = it.next();
@@ -40,7 +41,7 @@ public class BoardSequence implements Iterable<Board> {
             idx++;
             b = it.next();
         }
-        return values.stream().mapToDouble(Double::doubleValue).average().getAsDouble();
+        return values;
     }
 
     public BoardSequence(StaticStats staticStats, TemporalCoordinates initialCoordinates, double noise, double interactionRadius, Board.BoundaryConditions boundaryConditions, int periods) {

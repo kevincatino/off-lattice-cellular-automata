@@ -5,6 +5,7 @@ import ar.edu.itba.ss.cim.utils.MathHelper;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -27,9 +28,9 @@ public class DensityDataNWrapperDto {
         this.n = n;
     }
 
-    public void addData(double va, double density) {
+    public void addData(List<Double> vas, double density) {
         rawValues.putIfAbsent(density,new HashSet<>());
-        rawValues.get(density).add(va);
+        rawValues.get(density).addAll(vas);
     }
 
 

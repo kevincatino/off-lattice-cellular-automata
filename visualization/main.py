@@ -1,7 +1,5 @@
 from matplotlib import pyplot as plt
 import json
-from matplotlib.backends._backend_tk import NavigationToolbar2Tk
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 from visualization.models import Board, Particle
 from visualization.plots import plot_particles_in_board, plot_times, plot_m_times, plot_particles_velocity, plot_density, plot_noise, plot_va
@@ -35,6 +33,9 @@ from visualization.utils import parse_time_json, parse_json, parse_m_time_json, 
 # plot_times(time_measures)
 # time_measures = parse_m_time_json()
 # plot_m_times(time_measures)
+
+
+
 # particle_velocity_list = parse_particle_velocity()
 # plot_particles_velocity(particle_velocity_list, True)
 
@@ -46,6 +47,13 @@ from visualization.utils import parse_time_json, parse_json, parse_m_time_json, 
 # plot_noise(measures_list)
 
 
-f = open('../sequence1.json')
-measures = json.load(f)
+f01 = open('../sequence400-01.json')
+measures01 = json.load(f01)
+f1 = open('../sequence400-1.json')
+measures1 = json.load(f1)
+f3 = open('../sequence400-3.json')
+measures3 = json.load(f3)
+f5 = open('../sequence400-5.json')
+measures5 = json.load(f5)
+measures = [measures01, measures1, measures3, measures5]
 plot_va(measures)

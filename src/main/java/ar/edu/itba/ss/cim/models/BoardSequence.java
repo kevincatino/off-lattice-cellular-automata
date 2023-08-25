@@ -23,12 +23,11 @@ public class BoardSequence implements Iterable<Board> {
 
 
     public double getVa() {
-        final int TIMES = 2000;
-        final int TIMES_AVG = 100;
+        final int TIMES = 5000;
+        final int TIMES_AVG = 1000;
         int idx = 0;
         Iterator<Board> it = iterator();
         Board b = it.next();
-        double prevVa = b.getCurrentVa();
         List<Double> values = new ArrayList<>();
         boolean reachedTime = false;
         while (idx < TIMES + TIMES_AVG) {
@@ -36,12 +35,10 @@ public class BoardSequence implements Iterable<Board> {
                 reachedTime = true;
             }
             if (reachedTime) {
-                values.add(prevVa);
+                values.add(b.getCurrentVa());
             }
             idx++;
             b = it.next();
-            double newVa = b.getCurrentVa();
-            prevVa = newVa;
         }
         return values.stream().mapToDouble(Double::doubleValue).average().getAsDouble();
     }

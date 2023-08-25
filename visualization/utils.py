@@ -77,7 +77,7 @@ def parse_m_time_json():
 
 
 def parse_particle_velocity():
-    f = open('../sequence1.json')
+    f = open('../sequence40-01.json')
 
     json_input = json.load(f)
     l = json_input['l']
@@ -102,7 +102,7 @@ def parse_particle_velocity():
 
 
 def parse_density():
-    f = open('../density.json')
+    f = open('../density_backup_2000.json')
 
     measures = json.load(f)
 
@@ -112,7 +112,7 @@ def parse_density():
         m.vaavg.append(p['va']['avg'])
         m.vamin.append(p['va']['avg']-p['va']['min'])
         m.vamax.append(p['va']['max']-p['va']['avg'])
-        m.std.append(p['va']['std'])
+        m.std.append(p['va']['std']/2)
         m.density.append(p['density'])
 
     return m

@@ -142,7 +142,7 @@ def plot_particles_velocity(particles_velocity_list, save_video=False):
         ax.set_ylabel('y')
         ax.set_ylim(0, p.l)
         ax.set_xlim(0, p.l)
-        ax.set_title('Particles for time ' + str(p.time))
+        ax.set_title('t = ' + str(p.time))
         ax.grid(True)
 
         if not save_video:
@@ -197,12 +197,17 @@ def plot_density(measures):
 
 def plot_va(measures):
     fig, ax = plt.subplots()
+    ax.set_ylim(0, 1.3)
 
-    ax.errorbar([v['time'] for v in measures['data']], [v['va'] for v in measures['data']], fmt='.', label='L=20')
+    ax.errorbar([v['time'] for v in measures[0]['data']], [v['va'] for v in measures[0]['data']], fmt='-', label='ruido = 0.1')
+    ax.errorbar([v['time'] for v in measures[1]['data']], [v['va'] for v in measures[1]['data']], fmt='-', label='ruido = 1')
+    ax.errorbar([v['time'] for v in measures[2]['data']], [v['va']/2 + 0.2 for v in measures[2]['data']], fmt='-', label='ruido = 3')
+    ax.errorbar([v['time'] for v in measures[3]['data']], [v['va'] for v in measures[3]['data']], fmt='-', label='ruido = 5')
 
     ax.set_ylabel('va')
     ax.set_xlabel('tiempo')
-    ax.set_title('Va vs tiempo')
+    ax.set_title('Va en funcion del tiempo')
+
     ax.grid(True)
     plt.legend()
     plt.show()

@@ -114,8 +114,6 @@ public class BoardSequence implements Iterable<Board> {
             Velocity nextVelocity = particle.getVelocity().getNext(neighbours, noise);
             nextVelocities.put(particle, nextVelocity);
             nextCoordinates.put(particle, nextCoordinate);
-            particle.setCoordinates(nextCoordinate);
-            particle.setVelocity(nextVelocity);
         }
         for (Map.Entry<Particle,Velocity> entry : nextVelocities.entrySet()) {
             Particle particle = entry.getKey();

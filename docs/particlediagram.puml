@@ -1,0 +1,32 @@
+@startuml
+left to right direction
+class Velocity {
+- vx: double
+- vy: double
++ double getVx()
++ double getVy()
++ Velocity getNext(neighbours: Collection<Particle>, noise: double)
+}
+
+class Coordinates {
+- x: double
+- y: double
++ double getX()
++ double getY()
++ double getDistanceTo(coordinate: Coordinates)
++ Coordinate getNext(velocity: Velocity, boardLength: double)
+}
+
+class Particle {
+- coordinates: Coordinates
+- velocity: Velocity
+- neighbours: Collection<Particle>
++ void addNeighbour(particle: Particle)
++ void clearNeighbours()
++ Collection<Particle> getNeighbours()
+}
+
+Particle *- Coordinates
+Particle *- Velocity
+
+@enduml

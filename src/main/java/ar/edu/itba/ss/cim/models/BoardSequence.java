@@ -1,6 +1,7 @@
 package ar.edu.itba.ss.cim.models;
 
 import ar.edu.itba.ss.cim.dto.BoardSequenceDto;
+import ar.edu.itba.ss.cim.dto.VaDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
@@ -22,35 +23,27 @@ public class BoardSequence implements Iterable<Board> {
 
 
     public double getVa() {
-        final double DELTA = 0.008;
-        final int MAX_TIMES = 2000;
         final int TIMES = 2000;
-        int counter = TIMES;
+        final int TIMES_AVG = 100;
         int idx = 0;
         Iterator<Board> it = iterator();
         Board b = it.next();
         double prevVa = b.getCurrentVa();
-        while(true) {
+        List<Double> values = new ArrayList<>();
+        boolean reachedTime = false;
+        while (idx < TIMES + TIMES_AVG) {
+            if (idx == TIMES) {
+                reachedTime = true;
+            }
+            if (reachedTime) {
+                values.add(prevVa);
+            }
             idx++;
             b = it.next();
             double newVa = b.getCurrentVa();
-//            System.out.printf("prev: %f, new: %f\n", prevVa,newVa);
-            if (Math.abs(newVa - prevVa) < DELTA) {
-                counter--;
-            } else {
-                counter = TIMES;
-            }
             prevVa = newVa;
-            if (counter == 0){
-                System.out.println("Times: " + idx);
-                break;
-            }
-            else if (idx == MAX_TIMES) {
-                System.out.println("STABLE VALUE OF va COULD NOT BE FOUND");
-                break;
-            }
         }
-        return prevVa;
+        return values.stream().mapToDouble(Double::doubleValue).average().getAsDouble();
     }
 
     public BoardSequence(StaticStats staticStats, TemporalCoordinates initialCoordinates, double noise, double interactionRadius, Board.BoundaryConditions boundaryConditions, int periods) {
@@ -72,6 +65,14 @@ public class BoardSequence implements Iterable<Board> {
 
 
         board.addParticles(particles);
+    }
+
+    public int getParticleNumber() {
+        return particles.size();
+    }
+
+    public double getNoise() {
+        return noise;
     }
 
 
@@ -129,6 +130,14 @@ public class BoardSequence implements Iterable<Board> {
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.writeValue(new File(path), BoardSequenceDto.from(this));
+
+    }
+
+
+    public void writeVaToFile(String path) throws IOException {
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.writeValue(new File(path), VaDto.from(this));
 
     }
 

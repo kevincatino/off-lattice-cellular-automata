@@ -42,6 +42,32 @@ public class Arguments {
         this.runner.run(this);
     }
 
+
+    public static void vaRunner(Arguments args) throws IOException {
+        int[] numberOfParticles = args.getNumberOfParticles();
+        double interactionRadius = args.getInteractionRadius();
+        double[] boardLength = args.getBoardLengths();
+        double[] noise = args.getNoise();
+        int periods = args.getTimes();
+        double maxSpeed = 0.03;
+
+
+        for (int particlesNumber : numberOfParticles) {
+            for (Double n : noise) {
+                FileNamesWrapper fileNameWrapper = Fileparser.generateInputData(particlesNumber, boardLength[0], maxSpeed);
+
+                String STATIC_FILE_PATH = fileNameWrapper.StaticFileName;
+                String DYNAMIC_FILE_PATH = fileNameWrapper.DynamicFileName;
+                StaticStats staticStats = Fileparser.parseStaticFile(STATIC_FILE_PATH);
+                TemporalCoordinates temporalCoordinates = Fileparser.parseDynamicFile(DYNAMIC_FILE_PATH);
+                BoardSequence boardSequence = new BoardSequence(staticStats, temporalCoordinates, n, interactionRadius, Board.BoundaryConditions.NOT_PERIODIC, periods);
+                boardSequence.writeVaToFile("va" + fileNameWrapper.getId() + ".json");
+                break;
+            }
+            break;
+        }
+    }
+
     public static void regularRunner(Arguments args) throws IOException {
         int[] numberOfParticles = args.getNumberOfParticles();
         double interactionRadius = args.getInteractionRadius();

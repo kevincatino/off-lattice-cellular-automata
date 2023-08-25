@@ -116,6 +116,7 @@ public class Board {
         }
     }
 
+
     public int getM() {
         return M;
     }

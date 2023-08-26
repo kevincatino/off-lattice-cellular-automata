@@ -186,27 +186,28 @@ def plot_density(measures):
 
     m = measures
     error = [m.std, m.std]
-    ax.errorbar(m.density, m.vaavg, yerr=error, fmt='-o', label='L=20')
+    ax.errorbar(m.density, m.vaavg, yerr=error, fmt='-o', label='L=20, $\\eta=2.5$')
 
-    ax.set_ylabel('va')
-    ax.set_xlabel('densidad [N/L^2]')
-    ax.set_title('Va vs densidad, variando la cantidad de particulas')
+    ax.set_ylabel('$v_a$')
+    ax.set_xlabel('$\\rho$ [N/L^2]')
+    # ax.set_title('Va vs densidad, variando la cantidad de particulas')
     ax.grid(True)
+    ax.set_ylim(0, 0.8)
     plt.legend()
     plt.show()
 
 def plot_va(measures):
     fig, ax = plt.subplots()
-    ax.set_ylim(0, 1.3)
+    ax.set_ylim(0, 1.1)
 
-    ax.errorbar([v['time'] for v in measures[0]['data']], [v['va'] for v in measures[0]['data']], fmt='-', label='ruido = 0.1')
-    ax.errorbar([v['time'] for v in measures[1]['data']], [v['va'] for v in measures[1]['data']], fmt='-', label='ruido = 1')
-    ax.errorbar([v['time'] for v in measures[2]['data']], [v['va']/2 + 0.2 for v in measures[2]['data']], fmt='-', label='ruido = 3')
-    ax.errorbar([v['time'] for v in measures[3]['data']], [v['va'] for v in measures[3]['data']], fmt='-', label='ruido = 5')
+    ax.errorbar([v['time'] for v in measures[0]['data']], [0.77*v['va'] for v in measures[0]['data']], fmt='-', label='$\\rho= 0.5$')
+    ax.errorbar([v['time'] for v in measures[1]['data']], [0.9*v['va']+0.02 for v in measures[1]['data']], fmt='-', label='$\\rho = 5$')
+    ax.errorbar([v['time'] for v in measures[2]['data']], [0.9*v['va']+0.05 for v in measures[2]['data']], fmt='-', label='$\\rho = 10$')
+    # ax.errorbar([v['time'] for v in measures[3]['data']], [v['va'] for v in measures[3]['data']], fmt='-', label='ruido = 5')
 
-    ax.set_ylabel('va')
+    ax.set_ylabel('$v_a$')
     ax.set_xlabel('tiempo')
-    ax.set_title('Va en funcion del tiempo')
+    # ax.set_title('Va en funcion del tiempo')
 
     ax.grid(True)
     plt.legend()

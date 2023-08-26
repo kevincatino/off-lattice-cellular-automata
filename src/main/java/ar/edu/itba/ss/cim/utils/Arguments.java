@@ -108,7 +108,7 @@ public class Arguments {
     }
 
     public static void densityRunner(Arguments args) throws IOException {
-        final int ITER = 10;
+        final int ITER = 1;
         int[] numberOfParticles = args.getNumberOfParticles();
         double interactionRadius = args.getInteractionRadius();
         double[] boardLengths = args.getBoardLengths();
@@ -133,10 +133,11 @@ public class Arguments {
                     Files.delete(Paths.get(DYNAMIC_FILE_PATH));
 
                     data.addData(particleNumber, vaValues, density);
+                    System.out.println("Added data");
                 }
             }
         }
-        data.writeFile("density_backup_2000.json");
+        data.writeFile("density.json");
         }
 
     public static void noiseRunner(Arguments args) throws IOException {

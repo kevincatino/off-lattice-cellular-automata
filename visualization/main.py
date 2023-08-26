@@ -40,20 +40,20 @@ from visualization.utils import parse_time_json, parse_json, parse_m_time_json, 
 # plot_particles_velocity(particle_velocity_list, True)
 
 
-# measures_list = parse_density()
-# plot_density(measures_list)
+measures_list = parse_density()
+plot_density(measures_list)
 
 # measures_list = parse_noise()
 # plot_noise(measures_list)
 
 
-f01 = open('../sequence400-01.json')
+f01 = open('../vaBackup2.json')
 measures01 = json.load(f01)
-f1 = open('../sequence400-1.json')
+f1 = open('../vaBackup4.json')
 measures1 = json.load(f1)
-f3 = open('../sequence400-3.json')
+f3 = open('../vaBackup5.json')
 measures3 = json.load(f3)
-f5 = open('../sequence400-5.json')
-measures5 = json.load(f5)
-measures = [measures01, measures1, measures3, measures5]
+# f5 = open('../sequence400-5.json')
+# measures5 = json.load(f5)
+measures = [measures01, measures1,measures3]
 plot_va(measures)

@@ -147,7 +147,7 @@ public class Arguments {
         double[] noise = args.getNoise();
         int periods = args.getTimes();
         double maxSpeed = 0.03;
-        final int ITER = 10;
+        final int ITER = 1;
         NoiseDataMainWrapper data = new NoiseDataMainWrapper();
         for (int i=0 ; i< boardLength.length ; i++) {
             for (double nois : noise) {
@@ -163,6 +163,7 @@ public class Arguments {
                 data.addData(numberOfParticles[i], vas, nois);
                 Files.delete(Paths.get(STATIC_FILE_PATH));
                 Files.delete(Paths.get(DYNAMIC_FILE_PATH));
+                System.out.println("Added data");
                 }
 
             }

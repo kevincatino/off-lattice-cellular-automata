@@ -114,12 +114,24 @@ def plot_m_times(time_measures: MTimeMeasures):
 
 
 # https://stackoverflow.com/questions/18748328/plotting-arrows-with-different-color-in-matplotlib
-def plot_particles_velocity(particles_velocity_list, save_video=False):
+def plot_particles_velocity(particles_velocity_list, frames_between=3,framerate=20,save_video=False):
     images = []
     checked = False
-    for idx, p in enumerate(particles_velocity_list):
-        cmap = plt.cm.jet
+    counter = 0
+    idx = 0
+    folder_name = "output"  # Replace with your desired folder name
+    for p in particles_velocity_list:
+        if 0 < counter <= frames_between:
+            counter += 1
+            continue
+        else:
+            if counter > frames_between:
+                counter = 0
+                continue
+            else:
+                counter += 1
 
+        cmap = plt.cm.jet
         cNorm = colors.Normalize(vmin=np.min(-np.pi), vmax=np.max(np.pi))
 
         scalarMap = cmx.ScalarMappable(norm=cNorm, cmap=cmap)
@@ -136,7 +148,7 @@ def plot_particles_velocity(particles_velocity_list, save_video=False):
         q = ax.quiver(p.x, p.y, p.vx, p.vy, color=p.angle)
 
         cb1 = matplotlib.colorbar.ColorbarBase(axc, cmap=cmap,
-                                        norm=cNorm, orientation='vertical')
+                                               norm=cNorm, orientation='vertical')
 
         ax.set_xlabel('x')
         ax.set_ylabel('y')
@@ -144,15 +156,15 @@ def plot_particles_velocity(particles_velocity_list, save_video=False):
         ax.set_xlim(0, p.l)
         ax.set_title('t = ' + str(p.time))
         ax.grid(True)
+        idx += 1
 
         if not save_video:
             plt.show()
             plt.close()
             continue
-        folder_name = "output"  # Replace with your desired folder name
         if not checked:
-            if not checked and not os.path.exists(folder_name):
-                checked = True
+            checked = True
+            if not os.path.exists(folder_name):
                 os.makedirs(folder_name)
                 print(f"Folder '{folder_name}' created.")
             else:
@@ -168,17 +180,16 @@ def plot_particles_velocity(particles_velocity_list, save_video=False):
         images.append(filename)
         plt.close()
 
-        output_video_filename = f"{folder_name}/output_video.mp4"
-        try:
-            os.remove(output_video_filename)
-        except OSError:
-            pass
-        fps = 5  # Frames per second
+    output_video_filename = f"{folder_name}/output_video.mp4"
+    try:
+        os.remove(output_video_filename)
+    except OSError:
+        pass
 
-        with imageio.get_writer(output_video_filename, fps=fps) as writer:
-            for image_filename in images:
-                image = imageio.imread(image_filename)
-                writer.append_data(image)
+    with imageio.get_writer(output_video_filename, fps=framerate) as writer:
+        for image_filename in images:
+            image = imageio.imread(image_filename)
+            writer.append_data(image)
 
 
 def plot_density(measures):
@@ -196,13 +207,17 @@ def plot_density(measures):
     plt.legend()
     plt.show()
 
+
 def plot_va(measures):
     fig, ax = plt.subplots()
     ax.set_ylim(0, 1.1)
 
-    ax.errorbar([v['time'] for v in measures[0]['data']], [0.77*v['va'] for v in measures[0]['data']], fmt='-', label='$\\rho= 0.5$')
-    ax.errorbar([v['time'] for v in measures[1]['data']], [0.9*v['va']+0.02 for v in measures[1]['data']], fmt='-', label='$\\rho = 5$')
-    ax.errorbar([v['time'] for v in measures[2]['data']], [0.9*v['va']+0.05 for v in measures[2]['data']], fmt='-', label='$\\rho = 10$')
+    ax.errorbar([v['time'] for v in measures[0]['data']], [0.77 * v['va'] for v in measures[0]['data']], fmt='-',
+                label='$\\rho= 0.5$')
+    ax.errorbar([v['time'] for v in measures[1]['data']], [0.9 * v['va'] + 0.02 for v in measures[1]['data']], fmt='-',
+                label='$\\rho = 5$')
+    ax.errorbar([v['time'] for v in measures[2]['data']], [0.9 * v['va'] + 0.05 for v in measures[2]['data']], fmt='-',
+                label='$\\rho = 10$')
     # ax.errorbar([v['time'] for v in measures[3]['data']], [v['va'] for v in measures[3]['data']], fmt='-', label='ruido = 5')
 
     ax.set_ylabel('$v_a$')
@@ -213,16 +228,18 @@ def plot_va(measures):
     plt.legend()
     plt.show()
 
+
 def plot_noise(measures):
     fig, ax = plt.subplots()
-
+    fmts = {40: '-s', 100: '-o', 400 : '-^'}
+    sizes = {40: 6, 100: 6, 400 : 7}
     for m in measures:
         error = [m.std, m.std]
-        ax.errorbar(m.noise, m.vaavg, yerr=error, fmt='-o', label='N='+str(m.n))
+        ax.errorbar(m.noise, m.vaavg, yerr=error, fmt=fmts[m.n], label='N=' + str(m.n), markersize=sizes[m.n])
 
-    ax.set_ylabel('va')
-    ax.set_xlabel('ruido')
-    ax.set_title('Va vs ruido, densidad constante')
+    ax.set_ylabel('$v_a$')
+    ax.set_xlabel('$\eta$')
+    # ax.set_title('Va vs ruido, densidad constante')
     ax.grid(True)
     plt.legend()
     plt.show()

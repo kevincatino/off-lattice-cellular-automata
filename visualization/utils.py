@@ -77,7 +77,7 @@ def parse_m_time_json():
 
 
 def parse_particle_velocity():
-    f = open('../sequence40-01.json')
+    f = open('../sequence1.json')
 
     json_input = json.load(f)
     l = json_input['l']
@@ -119,7 +119,7 @@ def parse_density():
 
 
 def parse_noise():
-    f = open('../noise.json')
+    f = open('../noise_backup.json')
 
     measures = json.load(f)
 

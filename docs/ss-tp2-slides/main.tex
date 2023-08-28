@@ -1,0 +1,103 @@
+% compile with XeLaTeX
+\documentclass[dvipsnames,mathserif]{beamer}
+\setbeamertemplate{footline}[frame number]
+\usepackage[bigfiles]{pdfbase}
+\usepackage{tikz}
+\usepackage{animate}
+\usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily\scriptsize,  % Choose a basic font and size for the code
+  breaklines=true,             % Enable line breaking
+  keywordstyle=\color{blue},   % Color for keywords (like 'Function' in pseudocode)
+  commentstyle=\color{green},  % Color for comments (if you include any)
+  frame=single                 % Add a frame around the code
+}
+\usetheme{Darmstadt}
+\definecolor{beamer@blendedblue}{rgb}{0.2,0.2,0.7}
+% for RTL liste
+\makeatletter
+\newcommand{\RTListe}{\raggedleft\rightskip\leftm}
+\newcommand{\leftm}{\@totalleftmargin}
+\makeatother
+
+% RTL frame title
+\setbeamertemplate{frametitle}
+{\vspace*{-1mm}
+  \nointerlineskip
+    \begin{beamercolorbox}[sep=0.3cm,ht=2.2em,wd=\paperwidth]{frametitle}
+        \vbox{}\vskip-2ex%
+        \strut\hskip1ex\insertframetitle\strut
+        \vskip-0.8ex%
+    \end{beamercolorbox}
+}
+% align subsection in toc
+\makeatletter
+\setbeamertemplate{subsection in toc}
+{\leavevmode\rightskip=5ex%
+  \llap{\raise0.1ex\beamer@usesphere{subsection number projected}{bigsphere}\kern1ex}%
+  \inserttocsubsection\par%
+}
+\makeatother
+
+% RTL triangle for itemize
+\setbeamertemplate{itemize item}{\scriptsize\raise1.25pt\hbox{\donotcoloroutermaths$\blacktriangleleft$}} 
+
+%\setbeamertemplate{itemize item}{\rule{4pt}{4pt}}
+
+\defbeamertemplate{enumerate item}{square2}
+{\LR{
+    %
+    \hbox{%
+    \usebeamerfont*{item projected}%
+    \usebeamercolor[bg]{item projected}%
+    \vrule width2.25ex height1.85ex depth.4ex%
+    \hskip-2.25ex%
+    \hbox to2.25ex{%
+      \hfil%
+      {\color{fg}\insertenumlabel}%
+      \hfil}%
+  }%
+}}
+
+\setbeamertemplate{enumerate item}[square2]
+\setbeamertemplate{navigation symbols}{}
+
+\setbeamertemplate{caption}[numbered]
+\begin{document}
+
+\rightskip\rightmargin
+\title{Autómata Off-Lattice: Bandadas de agentes autopropulsados}
+\author[Di Toro, Catino, Chayer]{Camila Di Toro \and Kevin Catino \and Iván Chayer}
+\institute{}
+\date{}
+
+\begin{frame}
+\maketitle
+\vfill
+\centering{
+    {Instituto Técnologico de Buenos Aires}
+    \\
+    $[72.27]$ Simulación de Sistemas
+    \\
+}
+\end{frame}
+
+\begin{frame}{Contenidos}
+\footnotesize \tableofcontents
+\end{frame}
+\input{sections/1-introduccion.tex}
+\input{sections/2-implementacion.tex}
+\input{sections/3-simulaciones.tex}
+\input{sections/4-resultados.tex}
+\input{sections/5-conclusiones.tex}
+
+\end{document}
+
+
+
+
+
+
+
+
+

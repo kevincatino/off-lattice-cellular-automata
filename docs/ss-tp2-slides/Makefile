@@ -17,4 +17,4 @@ build$(NOVIDEO) :$(SOURCE)
 	pdflatex -jobname=tp2-slides-$(NOVIDEO) '\def\OUTPUT{$(NOVIDEO)} \input{$(SOURCE)}' $(SOURCE) > /dev/null
 
 clean: 
-	rm -rf *.aux *.log *.out *.fls *.gz *.fdb_latexmk cv.pdf
+	rm -rf *.aux *.log *.out *.fls *.gz *.fdb_latexmk

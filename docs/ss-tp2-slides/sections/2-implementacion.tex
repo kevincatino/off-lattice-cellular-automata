@@ -76,7 +76,7 @@ getNext(neighbours: list<particle>, noise: double) -> Velocity:
     noiseValue = RandomBetween(-noise/2, noise/2)
     
     angles = new list
-    for each particle IN neighbours:
+    for each particle in neighbours:
         angle = arctan(particle.vy / particle.vx)
         angles.add(angle)
 

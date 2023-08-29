@@ -97,7 +97,11 @@ Comportamiento de \(v_a\) con densidad
 \begin{columns}
     \begin{column}{0.7\textwidth}
       \begin{center}
-  \animategraphics[loop,controls,width=0.7\linewidth]{30}{animation/low_density/plot_}{0001}{1200}
+
+\ifthenelse{\equal{\OUTPUT}{video}}
+{\animategraphics[loop,controls,width=0.7\linewidth]{30}{animation/low_density/plot_}{0001}{1200}}
+{\includegraphics[width=0.7\linewidth]{animation/low_density/plot_1000.png}}
+
 \end{center}
     \end{column}
     \begin{column}{0.3\textwidth}
@@ -120,7 +124,9 @@ Comportamiento de \(v_a\) con densidad
 \begin{columns}
     \begin{column}{0.7\textwidth}
       \begin{center}
-  \animategraphics[loop,controls,width=0.7\linewidth]{30}{animation/high_density/plot_}{0001}{1200}
+\ifthenelse{\equal{\OUTPUT}{video}}
+{\animategraphics[loop,controls,width=0.7\linewidth]{30}{animation/high_density/plot_}{0001}{1200}}
+{\includegraphics[width=0.7\linewidth]{animation/high_density/plot_1000.png}}
 \end{center}
     \end{column}
     \begin{column}{0.3\textwidth}
@@ -142,7 +148,9 @@ Comportamiento de \(v_a\) con densidad
 \begin{columns}
     \begin{column}{0.7\textwidth}
       \begin{center}
-  \animategraphics[loop,controls,width=0.7\linewidth]{30}{animation/low_noise/plot_}{0001}{1200}
+\ifthenelse{\equal{\OUTPUT}{video}}
+{\animategraphics[loop,controls,width=0.7\linewidth]{30}{animation/low_noise/plot_}{0001}{1200}}
+{\includegraphics[width=0.7\linewidth]{animation/low_noise/plot_1000.png}}
 \end{center}
     \end{column}
     \begin{column}{0.3\textwidth}
@@ -165,7 +173,9 @@ Comportamiento de \(v_a\) con densidad
 \begin{columns}
     \begin{column}{0.7\textwidth}
       \begin{center}
-  \animategraphics[loop,controls,width=0.7\linewidth]{30}{animation/high_noise/plot_}{0001}{1200}
+\ifthenelse{\equal{\OUTPUT}{video}}
+{\animategraphics[loop,controls,width=0.7\linewidth]{30}{animation/high_noise/plot_}{0001}{1200}}
+{\includegraphics[width=0.7\linewidth]{animation/high_noise/plot_1000.png}}
 \end{center}
     \end{column}
     \begin{column}{0.3\textwidth}

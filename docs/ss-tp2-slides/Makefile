@@ -1,3 +1,4 @@
+# Como usar: 'make all', 'make no-video' o 'make video' para generar pdf y limpiar archivos intermedios
 VIDEO = video
 NOVIDEO =  no-video
 SOURCE = ./main.tex
@@ -17,4 +18,4 @@ build$(NOVIDEO) :$(SOURCE)
 	pdflatex -jobname=tp2-slides-$(NOVIDEO) '\def\OUTPUT{$(NOVIDEO)} \input{$(SOURCE)}' $(SOURCE) > /dev/null
 
 clean: 
-	rm -rf *.aux *.log *.out *.fls *.gz *.fdb_latexmk
+	rm -rf *.aux *.log *.out *.fls *.gz *.fdb_latexmk *.snm *.toc *.vrb *.nav

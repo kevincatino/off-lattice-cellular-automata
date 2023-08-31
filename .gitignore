@@ -33,3 +33,4 @@ replay_pid*
 
 *.txt
 *.json
+.DS_Store
